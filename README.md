@@ -26,9 +26,15 @@ Projeto em spring 3, usando jwt e keycloaker como servidor de auth
                 Descrição: o cadastro é feito atraves de um formulario onde deve ser informado nome, email e senha
                 Composição: apos a validação é enviado um email para ativação
                 
+**Build:**
+>* Iniciar servidor keycloaker 
+>* Iniciar migração/montar o banco de dados
+src/main/resources/db/migration
+>* Iniciar aplicação springboot
+                
 **TODO:**
+>*   Resolver TODOS, redundancias no application.yml
 >*   Levantamento de bugs e erros.
->    Correção de bugs e erros.
->*   Atualizar projeto, como dependecias e segurança.
+>*   Correção de bugs e erros.
                 
 
