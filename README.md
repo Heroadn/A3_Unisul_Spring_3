@@ -5,11 +5,10 @@ Projeto em spring 3, usando jwt e keycloaker como servidor de auth
 
     
 **Configurações e recomendações do projeto:**
->*   Utilizar um servidor local, no projeto é o framework Java, Springboot.
->*   Utilizar um banco de dados, no projeto é utilizado o MySQL 5.7 junto com o PhpMyAdmin.
+>*   Utilizar um servidor local, no projeto é o framework Java, Springboot 3.
+>*   Utilizar um banco de dados, no projeto é utilizado o MySQL.
 >*   Utilizar ferramenta para versionamento, no projeto é utilizado GIT.
->*   Utilizar o gerenciador de pacotes do Node(npm) para ter controle das dependências no Frontend(Angular).
->*   Utilizar um ambiente de trabalho para desenvolvimento, no projeto é utilizado o VSCode
+>*   Utilizar um ambiente de trabalho para desenvolvimento, no projeto é utilizado o VSCode/IntelliJ
 
 **Dependências do projeto:**
 >*  JAVA - Backend
