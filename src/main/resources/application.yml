@@ -1,0 +1,52 @@
+server:
+  port: 8081
+
+jwt:
+  auth:
+    converter:
+      resource-id: springboot-keycloak-client
+      principal-attribute: preferred_username
+
+spring:
+  security:
+    ignored: /**
+    oauth2:
+      client:
+        registration:
+          keycloak:
+            client-id: springboot-keycloak-client
+            auth-server-url: http://localhost:8080/auth
+            authorization-grant-type: authorization_code
+            server-url: http://localhost:8080
+            realm: SpringBootKeycloak
+            username: user
+            password: user
+            scope: openid
+            bearer-only: true
+        provider:
+          keycloak:
+            issuer-uri:  http://localhost:8080/realms/SpringBootKeycloak
+      resourceserver:
+        jwt:
+          issuer-uri:  http://localhost:8080/realms/SpringBootKeycloak
+          jwk-set-uri: ${spring.security.oauth2.resourceserver.jwt.issuer-uri}/protocol/openid-connect/certs
+  jpa:
+    database: MYSQL
+    show-sql: true
+
+  datasource:
+    url: jdbc:mariadb://localhost/test_cards?useTimezone=true&serverTimezone=UTC&createDatabaseIfNotExist=true&useSSL=false
+    driver-class-name: org.mariadb.jdbc.Driver
+    username: root
+    password: ""
+
+  jackson:
+    deserialization.fail-on-unknown-properties: true
+    date-format: dd-MM-yyyy HH:mm:ss
+
+  logging:
+    level:
+      org.springframework.web.client.RestTemplate: DEBUG
+      org:
+        springframework:
+          web=DEBUG:
