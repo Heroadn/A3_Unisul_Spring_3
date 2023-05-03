@@ -43,6 +43,11 @@ abstract public class GenericRestController
     @PostMapping
     public ResponseEntity<Model> save(Model model, HttpServletResponse response) {
         Model fromDb = service.save(model);
+
+        //TODO: possivel erro ao inserir usuario q ja existe
+        if(fromDb == null)
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(null);
+
         publisher.publishEvent(new RecursoCriadoEvento(this, response, fromDb.getID()));
         return ResponseEntity.status(HttpStatus.CREATED).body(fromDb);
     }
