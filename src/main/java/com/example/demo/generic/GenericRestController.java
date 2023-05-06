@@ -44,7 +44,7 @@ abstract public class GenericRestController
     public ResponseEntity<Model> save(Model model, HttpServletResponse response) {
         Model fromDb = service.save(model);
 
-        //TODO: possivel erro ao inserir usuario q ja existe
+        //Caso o usuario ja exista é provavel q save retorne null
         if(fromDb == null)
             return ResponseEntity.status(HttpStatus.CONFLICT).body(null);
 

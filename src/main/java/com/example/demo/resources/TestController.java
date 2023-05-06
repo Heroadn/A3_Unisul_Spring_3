@@ -31,7 +31,7 @@ public class TestController {
             @AuthenticationPrincipal OidcUser principal) {
         return principal;
     }
-    //TODO: mover para controller de usuario
+    //TODO: mover para controller de usuario <<FUNÇÂO DE TESTE>>
     @GetMapping("/anonymous")
     public ResponseEntity<Usuario> getAnonymous(@RequestBody Usuario usuario) {
         /*

@@ -34,10 +34,14 @@ public class Usuario extends BaseModel {
     @Transient
     private String senha;
 
+    /*
     public Usuario(String nome, String email) {
         this.nome = nome;
         this.email = email;
-    }
+    }*/
+
+    public Usuario() {}
+
     public String getNome() {
         return nome;
     }

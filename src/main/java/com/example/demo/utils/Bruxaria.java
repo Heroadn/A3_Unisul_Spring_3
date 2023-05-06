@@ -1,0 +1,55 @@
+package com.example.demo.utils;
+
+import org.apache.commons.codec.binary.Base64;
+import org.springframework.core.io.ClassPathResource;
+
+import java.io.*;
+
+public class Bruxaria {
+
+    private static final String IMAGE_PATH = "/image/";
+    public static String getBase64Ext(String base64)
+    {
+        return base64.substring(
+                base64.indexOf("/") + 1,
+                base64.indexOf(";"));
+    }
+
+    public static String getBase64Image(String base64)
+    {
+        //'data:image/png;base64,data...'
+        return base64.split(",")[1];
+    }
+
+    public static String getAbsoluteResoucesPath()
+    {
+        ClassPathResource tmpPath = new ClassPathResource("src/main/resources");
+        File outPath = new File(tmpPath.getPath());
+        return outPath.getAbsolutePath();
+    }
+
+    public static String getAbsoluteImagePath()
+    {
+        ClassPathResource tmpPath = new ClassPathResource("src/main/resources");
+        File outPath = new File(tmpPath.getPath());
+        return outPath.getAbsolutePath() + IMAGE_PATH;
+    }
+
+    public static String toImageFilename(String name, String ext)
+    {
+        return name + "." + ext;
+    }
+
+    public static void writeBase64ImageToPath(String base64Image, String outPath)
+    {
+        byte[] bytes = Base64.decodeBase64(base64Image);
+
+        try (OutputStream stream = new FileOutputStream(outPath)) {
+            stream.write(bytes);
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+}
