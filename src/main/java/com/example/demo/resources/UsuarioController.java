@@ -17,6 +17,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(path = "/usuario", produces = "application/hal+json")
 public class UsuarioController extends GenericRestController<Usuario, UsuarioRepository, UsuarioService> {
 
+    /*TODO: adicionar metodo de atualização de login, caso os dados de senha
+    tenham sido perdidos no servidor de authenticação */
+
     @PostMapping(value = "/login")
     public ResponseEntity<String> login(@RequestBody Usuario model, HttpServletResponse response) {
         String token = service.login(model);

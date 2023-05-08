@@ -1,4 +1,4 @@
---Tabela resposavel por guardar imagens em geral
+#Tabela resposavel por guardar imagens em geral
 create table midia(
     id INTEGER PRIMARY KEY AUTO_INCREMENT NOT NULL,
     file_name VARCHAR(80) NOT NULL,
