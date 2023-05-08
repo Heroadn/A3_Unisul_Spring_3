@@ -73,4 +73,8 @@ public class KeycloakService {
     public AccessTokenResponse getAccessToken(final Usuario usuario) {
         return keycloak.tokenManager(usuario).getAccessToken();
     }
+
+    public String getRefreshToken(final Usuario usuario) {
+        return getAccessToken(usuario).getRefreshToken();
+    }
 }

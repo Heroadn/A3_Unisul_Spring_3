@@ -5,11 +5,16 @@ import com.example.demo.model.BaseModel;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.io.Serializable;
 
@@ -30,6 +35,35 @@ abstract public class GenericRestController
 
     @Autowired
     public ApplicationEventPublisher publisher;
+
+    @GetMapping
+    public ResponseEntity<Page<Model>> findAll(Pageable pageable) {
+        Page<Model> list = repository.findAll(pageable);
+        list.forEach(model -> {
+            model.add(linkTo(methodOn(this.getClass()).findById(model.ID)).withSelfRel());
+        });
+        return ResponseEntity.status(HttpStatus.CREATED).body(list);
+    }
+
+    /*
+    @GetMapping(params = { "page", "size" })
+    public List<Foo> findPaginated(@RequestParam("page") int page,
+                                   @RequestParam("size") int size,
+                                   UriComponentsBuilder uriBuilder,
+                                   HttpServletResponse response) {
+
+        Pageable pageable =
+                new PageRequest(0, 10);
+        repository.findAll();//
+        Page<Foo> resultPage = service.findPaginated(page, size);
+        if (page > resultPage.getTotalPages()) {
+            throw new MyResourceNotFoundException();
+        }
+        eventPublisher.publishEvent(new PaginatedResultsRetrievedEvent<Foo>(
+                Foo.class, uriBuilder, response, page, resultPage.getTotalPages(), size));
+
+        return resultPage.getContent();
+    }*/
 
     @Override
     @GetMapping(value = "/{id}")
