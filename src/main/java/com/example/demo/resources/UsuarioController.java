@@ -23,9 +23,23 @@ public class UsuarioController extends GenericRestController<Usuario, UsuarioRep
     //TODO: adicionar metodo para refresh token
     /*TODO: fazer com q login retorne um refresh token, e com esse token
     posso pedir um access token sempre q expirado*/
+    /*
     @PostMapping(value = "/login")
     public ResponseEntity<String> login(@RequestBody Usuario model, HttpServletResponse response) {
         String token = service.login(model);
+        return ResponseEntity.status(HttpStatus.OK).body(token);
+    }*/
+
+    //metodo retorna um refreshToken
+    @PostMapping(value = "/login-refresh")
+    public ResponseEntity<String> loginRefreshToken(@RequestBody Usuario model, HttpServletResponse response) {
+        String token = service.login(model);
+        return ResponseEntity.status(HttpStatus.OK).body(token);
+    }
+
+    @PostMapping(value = "/login-access")
+    public ResponseEntity<String> loginAccessToken(String refreshToken, HttpServletResponse response) {
+        String token = service.getAccessToken(refreshToken);
         return ResponseEntity.status(HttpStatus.OK).body(token);
     }
 }

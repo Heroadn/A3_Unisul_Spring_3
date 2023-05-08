@@ -8,8 +8,12 @@ import org.keycloak.representations.AccessTokenResponse;
 import org.keycloak.representations.idm.CredentialRepresentation;
 import org.keycloak.representations.idm.UserRepresentation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.RestTemplate;
+
 import java.util.Arrays;
 
 @Service
@@ -21,6 +25,18 @@ public class KeycloakService {
     public static final class CustomTokenMapper
     {
         public static final String RESOURCE_ID = "resource-id";
+    };
+
+    //protocol/openid-connect/token
+    public static class OpenidConnectResponse{
+        public String access_token;
+        public int expires_in;
+        public int refresh_expires_in;
+        public String refresh_token;
+        public String token_type;
+        public int not_before_policy;
+        public String session_state;
+        public String scope;
     };
 
     /**
@@ -76,5 +92,32 @@ public class KeycloakService {
 
     public String getRefreshToken(final Usuario usuario) {
         return getAccessToken(usuario).getRefreshToken();
+    }
+
+    public String requestAccessToken(String refreshToken)
+    {
+        //http://localhost:8080/realms/SpringBootKeycloak/protocol/openid-connect/token
+        final String uri
+                = keycloak.getServerUrl() + "/realms/" + keycloak.getRealm()
+                +"/protocol/openid-connect/token";
+
+        RestTemplate restTemplate = new RestTemplate();
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+
+        MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
+        map.add("client_id", keycloak.getClientId());
+        map.add("grant_type","refresh_token");
+        map.add("refresh_token", refreshToken);
+
+        HttpEntity<MultiValueMap<String, String>> entity = new HttpEntity<>(map, headers);
+
+        ResponseEntity<OpenidConnectResponse> response =
+                restTemplate.exchange(uri,
+                        HttpMethod.POST,
+                        entity,
+                        OpenidConnectResponse.class);
+
+        return response.getBody().access_token;
     }
 }

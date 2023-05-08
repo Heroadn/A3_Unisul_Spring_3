@@ -3,11 +3,14 @@ package com.example.demo.service;
 import com.example.demo.generic.BasicRestService;
 import com.example.demo.model.Usuario;
 import com.example.demo.repository.UsuarioRepository;
+import org.keycloak.representations.AccessTokenResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import javax.ws.rs.NotAuthorizedException;
 
 //TODO: adicionar configurações do jwt
 @Service
@@ -68,8 +71,16 @@ public class UsuarioService extends BasicRestService<Usuario, UsuarioRepository>
     {
         //TODO: mensagem de erro ao login falhar
         //classe que gera exception ao falhar, javax.ws.rs.NotAuthorizedException: HTTP 401 Unauthorized
-        return keycloakService.getAccessToken(usuario).getToken();
+        AccessTokenResponse response = keycloakService.getAccessToken(usuario);
+        return keycloakService.getAccessToken(usuario).getRefreshToken();
     }
+
+    public String getAccessToken(String refreshToken)
+    {
+        //TODO: verificar por errors
+        return keycloakService.requestAccessToken(refreshToken);
+    }
+
 
     private String generteRandomCode(int size){
         return ""+ (size * Math.random());

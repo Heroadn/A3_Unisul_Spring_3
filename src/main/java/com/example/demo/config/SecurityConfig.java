@@ -52,7 +52,8 @@ public class SecurityConfig {
 
     private static final String[] POST_AUTH_WHITELIST = {
             "/usuario",
-            "/usuario/login",
+            "/usuario/login-refresh",
+            "/usuario/login-access",
             "/test/anonymous1",
             "/test/anonymous1/**",
     };
