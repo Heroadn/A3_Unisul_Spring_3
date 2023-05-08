@@ -45,26 +45,6 @@ abstract public class GenericRestController
         return ResponseEntity.status(HttpStatus.CREATED).body(list);
     }
 
-    /*
-    @GetMapping(params = { "page", "size" })
-    public List<Foo> findPaginated(@RequestParam("page") int page,
-                                   @RequestParam("size") int size,
-                                   UriComponentsBuilder uriBuilder,
-                                   HttpServletResponse response) {
-
-        Pageable pageable =
-                new PageRequest(0, 10);
-        repository.findAll();//
-        Page<Foo> resultPage = service.findPaginated(page, size);
-        if (page > resultPage.getTotalPages()) {
-            throw new MyResourceNotFoundException();
-        }
-        eventPublisher.publishEvent(new PaginatedResultsRetrievedEvent<Foo>(
-                Foo.class, uriBuilder, response, page, resultPage.getTotalPages(), size));
-
-        return resultPage.getContent();
-    }*/
-
     @Override
     @GetMapping(value = "/{id}")
     public ResponseEntity<Model> findById(@PathVariable long id) {
