@@ -10,6 +10,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name ="usuario")
@@ -29,16 +30,13 @@ public class Usuario extends BaseModel {
     @CreationTimestamp
     private LocalDate data_criacao;
 
+    @OneToMany(mappedBy = "usuario")
+    private Set<MidiaUsuario> images;
+
     //password is stored into authorization server
     //field purpose is just to receive when post request
     @Transient
     private String senha;
-
-    /*
-    public Usuario(String nome, String email) {
-        this.nome = nome;
-        this.email = email;
-    }*/
 
     public Usuario() {}
 
@@ -85,4 +83,17 @@ public class Usuario extends BaseModel {
     public LocalDate getData_criacao() { return data_criacao; }
 
     public void setData_criacao(LocalDate data_criacao) { this.data_criacao = data_criacao; }
+
+    public Set<MidiaUsuario> getImages() {
+        return images;
+    }
+
+    public void setImages(Set<MidiaUsuario> images) {
+        this.images = images;
+    }
+
+    public void addMidiaUsuario(MidiaUsuario midiaUsuario)
+    {
+        images.add(midiaUsuario);
+    }
 }

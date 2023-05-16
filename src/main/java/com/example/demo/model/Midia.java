@@ -1,12 +1,10 @@
 package com.example.demo.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
+import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDate;
+import java.util.Set;
 
 @Entity
 @Table(name ="midia")
@@ -20,6 +18,9 @@ public class Midia extends BaseModel {
     @CreationTimestamp
     @Column(name="data_insercao")
     private LocalDate dataInsercao;
+
+    @OneToMany(mappedBy = "midia")
+    private Set<MidiaUsuario> images;
 
     //used to store image
     @Transient
@@ -57,5 +58,18 @@ public class Midia extends BaseModel {
 
     public void setFileImage64(String fileImage64) {
         this.fileImage64 = fileImage64;
+    }
+
+    public Set<MidiaUsuario> getImages() {
+        return images;
+    }
+
+    public void setImages(Set<MidiaUsuario> images) {
+        this.images = images;
+    }
+
+    public void addMidiaUsuario(MidiaUsuario midiaUsuario)
+    {
+        images.add(midiaUsuario);
     }
 }

@@ -86,6 +86,11 @@ public class KeycloakService {
         return HttpStatus.CREATED.value();
     }
 
+    public UserResource getUser(String id)
+    {
+        return keycloak.getInstance().realm(keycloak.getRealm()).users().get(id);
+    }
+
     public AccessTokenResponse getAccessToken(final Usuario usuario) {
         return keycloak.tokenManager(usuario).getAccessToken();
     }
