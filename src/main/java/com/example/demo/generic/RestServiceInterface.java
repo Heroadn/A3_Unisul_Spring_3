@@ -13,5 +13,7 @@ public interface RestServiceInterface<Model> {
 
     Model delete(Long id);
 
+    <T extends Object>Boolean exists(T condition);
+
     Link generateSelfLink(Long id, Class<RestControllerInterface> controller);
 }

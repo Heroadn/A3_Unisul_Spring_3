@@ -53,6 +53,11 @@ abstract public class BasicRestService<
     }
 
     @Override
+    public <T extends Object> Boolean exists(T condition) {
+        return true;
+    }
+
+    @Override
     @Deprecated
     public Link generateSelfLink(Long id, Class<RestControllerInterface> controller){
         //HttpEntity<Model> method = methodOn(RestControllerInterface.class).findById(id);

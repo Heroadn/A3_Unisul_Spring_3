@@ -29,7 +29,7 @@ public class MidiaService extends BasicRestService<Midia, MidiaRepository> {
 
     @Override
     public Midia save(Midia midia) {
-        if(existsByFileName(midia.getFileName()))
+        if(exists(midia.getFileName()))
             return null;
         return super.save(midia);
     }
@@ -41,8 +41,9 @@ public class MidiaService extends BasicRestService<Midia, MidiaRepository> {
         midiaUsuarioRepository.save(midiaUsuario);
     }
 
-    public Boolean existsByFileName(String fileName) {
-        return mediaRepository.existsByFileName(fileName);
+    @Override
+    public <T extends Object> Boolean exists(T fileName) {
+        return mediaRepository.existsByFileName((String) fileName);
     }
 
     public Midia getByFileName(String fileName) {
