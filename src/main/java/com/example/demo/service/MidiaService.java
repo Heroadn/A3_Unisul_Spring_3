@@ -66,23 +66,14 @@ public class MidiaService extends BasicRestService<Midia, MidiaRepository> {
         }
     }
 
-    public void storeImage(Midia midia) {
-        //TODO: mover para mediaService
+    public void createImage(Midia midia) {
         String base64 = midia.getFileImage64();
         String base64Image = Bruxaria.getBase64Image(base64);
         String ext = Bruxaria.getBase64Ext(base64);
 
+        //monta o fileName + ext, para o diretorio de imagens
         String outPath = Bruxaria.getAbsoluteImagePath()
                 + Bruxaria.toImageFilename(midia.getFileName(), ext);
         Bruxaria.writeBase64ImageToPath(base64Image, outPath);
-
-        /*
-        Link link = WebMvcLinkBuilder.linkTo(MediaController.class)
-                .withRel("/" + media.getFile_name());
-        return ResponseEntity
-                .ok()
-                .contentType(MediaType.APPLICATION_JSON)
-                .body(link);
-         */
     }
 }
