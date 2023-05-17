@@ -9,5 +9,7 @@ import java.util.Optional;
 
 @Repository
 public interface MidiaRepository extends JpaRepository<Midia, Serializable> {
+
+    Boolean existsByFileName(String fileName);
     Optional<Midia> findByFileName(String name);
 }

@@ -39,7 +39,6 @@ public class MediaController extends GenericRestController<Midia, MidiaRepositor
     @Autowired
     private KeycloakService keycloakService;
 
-
     @Autowired
     private MidiaUsuarioRepository midiaUsuarioRepository;
 
@@ -49,18 +48,17 @@ public class MediaController extends GenericRestController<Midia, MidiaRepositor
             Midia midia,
             HttpServletResponse response)
     {
-        //TODO: mandar mensagem de erro caso imagem com mesmo nome ja exista
         Midia fromDb = service.save(midia);
+
         if(fromDb == null)
             return ResponseEntity.status(HttpStatus.CONFLICT).body(null);
 
-        //TODO: check for more errors before attempting to store image
         service.storeImage(midia);
         publisher.publishEvent(new RecursoCriadoEvento(this, response, fromDb.getID()));
         return ResponseEntity.status(HttpStatus.CREATED).body(fromDb);
     }
 
-    @GetMapping(value = "/getImage/{name}", produces = MediaType.IMAGE_PNG_VALUE)
+    @GetMapping(value = "/image/{name}", produces = MediaType.IMAGE_PNG_VALUE)
     public ResponseEntity<InputStreamResource> getImage(
             @PathVariable(name = "name") String name) throws IOException
     {
@@ -69,25 +67,28 @@ public class MediaController extends GenericRestController<Midia, MidiaRepositor
     }
 
     //linka imagem com um usuario que realizou login
-    @PostMapping(value = "/image/{midiaId}")
+    @PostMapping(value = "/usuario")
     public ResponseEntity<String> addMidiaUsuario(
+            @RequestBody Midia midia,
             Principal principal,
-            @PathVariable Long midiaId,
             HttpServletResponse response)
     {
         JwtAuthenticationToken token = (JwtAuthenticationToken) principal;
         String userEmail = (String) token.getTokenAttributes().get("email");
 
-        //obtendo entidades
+        //saving image and getting user details
+        midia.setFileName( userEmail + "_" +midia.getFileName());
+        ResponseEntity<Midia> resMidia = save(midia, response);
         Usuario usuario = usuarioService.get(userEmail);
-        Midia midia = service.get(midiaId);
+
+        //caso a imagem ja exista status de conflito é exibido
+        if(resMidia.getBody() == null)
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(null);
 
         //criando tabela de relação
-        MidiaUsuario midiaUsuario = new MidiaUsuario();
-        midiaUsuario.setMidia(midia);
-        midiaUsuario.setUsuario(usuario);
-        midiaUsuarioRepository.save(midiaUsuario);
-
+        service.saveMediaUsuario(usuario, resMidia.getBody());
         return ResponseEntity.status(HttpStatus.OK).body("");
     }
+
+
 }

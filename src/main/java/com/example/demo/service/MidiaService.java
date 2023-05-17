@@ -2,7 +2,10 @@ package com.example.demo.service;
 
 import com.example.demo.generic.BasicRestService;
 import com.example.demo.model.Midia;
+import com.example.demo.model.MidiaUsuario;
+import com.example.demo.model.Usuario;
 import com.example.demo.repository.MidiaRepository;
+import com.example.demo.repository.MidiaUsuarioRepository;
 import com.example.demo.utils.Bruxaria;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
@@ -20,6 +23,27 @@ public class MidiaService extends BasicRestService<Midia, MidiaRepository> {
 
     @Autowired
     MidiaRepository mediaRepository;
+
+    @Autowired
+    private MidiaUsuarioRepository midiaUsuarioRepository;
+
+    @Override
+    public Midia save(Midia midia) {
+        if(existsByFileName(midia.getFileName()))
+            return null;
+        return super.save(midia);
+    }
+
+    public void saveMediaUsuario(Usuario usuario, Midia midia) {
+        MidiaUsuario midiaUsuario = new MidiaUsuario();
+        midiaUsuario.setMidia(midia);
+        midiaUsuario.setUsuario(usuario);
+        midiaUsuarioRepository.save(midiaUsuario);
+    }
+
+    public Boolean existsByFileName(String fileName) {
+        return mediaRepository.existsByFileName(fileName);
+    }
 
     public Midia getByFileName(String fileName) {
         Optional<Midia> resource = mediaRepository.findByFileName((fileName));
