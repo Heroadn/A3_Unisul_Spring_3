@@ -74,7 +74,7 @@ public class MediaController extends GenericRestController<Midia, MidiaRepositor
         //saving image and getting user details
         midia.setFileName( userEmail + "_" +midia.getFileName());
         ResponseEntity<Midia> resMidia = save(midia, response);
-        Usuario usuario = usuarioService.get(userEmail);
+        Usuario usuario = usuarioService.getByEmail(userEmail);
 
         //caso a imagem ja exista status de conflito é exibido
         if(resMidia.getBody() == null)

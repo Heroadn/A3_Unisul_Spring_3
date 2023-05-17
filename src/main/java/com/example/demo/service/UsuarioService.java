@@ -7,59 +7,45 @@ import org.keycloak.representations.AccessTokenResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import javax.ws.rs.NotAuthorizedException;
 import java.util.Optional;
 
-//TODO: adicionar configurações do jwt
 @Service
 public class UsuarioService extends BasicRestService<Usuario, UsuarioRepository> {
     @Autowired
     KeycloakService keycloakService;
-
     @Autowired
     private UsuarioRepository usuarioRepository;
-
-    public Usuario get(String email) {
-        Optional<Usuario> resource = usuarioRepository.findByEmail(email);
-        resource.orElseThrow(() -> new EmptyResultDataAccessException(1));
-        return resource.get();
-    }
-
     @Override
     public Usuario save(Usuario usuario) {
+        if (exists(usuario.getEmail()))
+            return null;
+
         //Configurando usuario
         usuario.setSenha(usuario.getSenha());
         usuario.setToken(generteRandomCode(7));
         Usuario usuarioBanco = usuarioRepository.save(usuario);
 
-        //TODO: check if the user already exists
-        //if it already exist in the db return error
+        //TODO: usar optionals
+        /*usuario.ifPresent(u -> {*/
 
         //store passwords and others into auth server
         int response = keycloakService.createAccount(usuarioBanco);
 
-        //if the user already exists
+        //if the user already exists in keycloaker
         if (response == HttpStatus.CONFLICT.value()) {
-            //TODO: change to logger
-            System.out.println("User already exists");
-            usuarioRepository.delete(usuario);
+            System.out.println("User already exists in auth server");
             return null;
         }
 
         //if the auth server could not create
         //delete it from the resource server
         if (response != HttpStatus.CREATED.value()) {
-            //TODO: change to logger
             System.out.println("Could not create user");
             usuarioRepository.delete(usuario);
             return null;
         }
-
-        //TODO: guardar id gerado pelo servidor de autorização
 
         //removing secret fields
         usuarioBanco.setToken("******");
@@ -74,6 +60,18 @@ public class UsuarioService extends BasicRestService<Usuario, UsuarioRepository>
         //remover do servidor de autenticação
         return null;
     }
+
+    @Override
+    public <T> Boolean exists(T condition) {
+        return usuarioRepository.existsByEmail((String)condition);
+    }
+
+    public Usuario getByEmail(String email) {
+        Optional<Usuario> resource = usuarioRepository.findByEmail(email);
+        resource.orElseThrow(() -> new EmptyResultDataAccessException(1));
+        return resource.get();
+    }
+
 
     public String login(Usuario usuario)
     {
