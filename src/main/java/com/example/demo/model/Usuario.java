@@ -7,6 +7,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -28,7 +29,7 @@ public class Usuario extends BaseModel {
     private String token;
 
     @CreationTimestamp
-    private LocalDate data_criacao;
+    private LocalDateTime data_criacao;
 
     @OneToMany(mappedBy = "usuario")
     private Set<MidiaUsuario> images;
@@ -80,9 +81,9 @@ public class Usuario extends BaseModel {
         this.token = token;
     }
 
-    public LocalDate getData_criacao() { return data_criacao; }
+    public LocalDateTime getData_criacao() { return data_criacao; }
 
-    public void setData_criacao(LocalDate data_criacao) { this.data_criacao = data_criacao; }
+    public void setData_criacao(LocalDateTime data_criacao) { this.data_criacao = data_criacao; }
 
     public Set<MidiaUsuario> getImages() {
         return images;

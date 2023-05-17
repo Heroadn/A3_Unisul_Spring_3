@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Set;
 
 @Entity
@@ -17,7 +18,7 @@ public class Midia extends BaseModel {
 
     @CreationTimestamp
     @Column(name="data_insercao")
-    private LocalDate dataInsercao;
+    private LocalDateTime dataInsercao;
 
     @OneToMany(mappedBy = "midia")
     private Set<MidiaUsuario> images;
@@ -44,11 +45,11 @@ public class Midia extends BaseModel {
         this.fileSize = fileSize;
     }
 
-    public LocalDate getDataInsercao() {
+    public LocalDateTime getDataInsercao() {
         return dataInsercao;
     }
 
-    public void setDataInsercao(LocalDate dataInsercao) {
+    public void setDataInsercao(LocalDateTime dataInsercao) {
         this.dataInsercao = dataInsercao;
     }
 

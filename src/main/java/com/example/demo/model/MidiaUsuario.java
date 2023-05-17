@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name ="midia_usuario")
@@ -18,7 +19,7 @@ public class MidiaUsuario extends BaseModel {
     private Midia midia;
 
     @CreationTimestamp
-    private LocalDate data_alteracao;
+    private LocalDateTime data_alteracao;
 
     public Usuario getUsuario() {
         return usuario;
@@ -36,11 +37,11 @@ public class MidiaUsuario extends BaseModel {
         this.midia = midia;
     }
 
-    public LocalDate getData_alteracao() {
+    public LocalDateTime getData_alteracao() {
         return data_alteracao;
     }
 
-    public void setData_alteracao(LocalDate data_alteracao) {
+    public void setData_alteracao(LocalDateTime data_alteracao) {
         this.data_alteracao = data_alteracao;
     }
 }
