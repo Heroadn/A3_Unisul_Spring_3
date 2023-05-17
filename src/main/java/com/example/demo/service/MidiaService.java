@@ -34,16 +34,16 @@ public class MidiaService extends BasicRestService<Midia, MidiaRepository> {
         return super.save(midia);
     }
 
+    @Override
+    public <T extends Object> Boolean exists(T fileName) {
+        return mediaRepository.existsByFileName((String) fileName);
+    }
+
     public void saveMediaUsuario(Usuario usuario, Midia midia) {
         MidiaUsuario midiaUsuario = new MidiaUsuario();
         midiaUsuario.setMidia(midia);
         midiaUsuario.setUsuario(usuario);
         midiaUsuarioRepository.save(midiaUsuario);
-    }
-
-    @Override
-    public <T extends Object> Boolean exists(T fileName) {
-        return mediaRepository.existsByFileName((String) fileName);
     }
 
     public Midia getByFileName(String fileName) {
