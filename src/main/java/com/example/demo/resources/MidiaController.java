@@ -26,7 +26,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 //controller responsavel por salvar imagens
 @RestController
 @RequestMapping(path = "/midia", produces = "application/hal+json")
-public class MediaController extends GenericRestController<Midia, MidiaRepository, MidiaService> {
+public class MidiaController extends GenericRestController<Midia, MidiaRepository, MidiaService> {
 
     @Autowired
     private UsuarioService usuarioService;
@@ -37,6 +37,8 @@ public class MediaController extends GenericRestController<Midia, MidiaRepositor
     @Autowired
     private MidiaUsuarioRepository midiaUsuarioRepository;
 
+
+    //TODO: mover como midiaServiço
     @Override
     @PostMapping
     public ResponseEntity<Midia> save(
@@ -72,6 +74,7 @@ public class MediaController extends GenericRestController<Midia, MidiaRepositor
         String userEmail = (String) token.getTokenAttributes().get("email");
 
         //saving image and getting user details
+        //TODO: mudar email para id do usuario, se o email mudar as imagens podem ser perdidas
         midia.setFileName( userEmail + "_" +midia.getFileName());
         ResponseEntity<Midia> resMidia = save(midia, response);
         Usuario usuario = usuarioService.getByEmail(userEmail);

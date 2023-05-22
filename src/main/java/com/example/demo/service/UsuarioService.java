@@ -1,22 +1,38 @@
 package com.example.demo.service;
 
 import com.example.demo.generic.BasicRestService;
+import com.example.demo.model.MidiaUsuario;
 import com.example.demo.model.Usuario;
 import com.example.demo.repository.UsuarioRepository;
+import com.example.demo.resources.MidiaController;
 import org.keycloak.representations.AccessTokenResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.hateoas.Link;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Optional;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @Service
 public class UsuarioService extends BasicRestService<Usuario, UsuarioRepository> {
     @Autowired
-    KeycloakService keycloakService;
+    private KeycloakService keycloakService;
+
+    @Autowired
+    private MidiaService midiaService;
+
     @Autowired
     private UsuarioRepository usuarioRepository;
+
+
     @Override
     public Usuario save(Usuario usuario) {
         if (exists(usuario.getEmail()))
@@ -70,6 +86,25 @@ public class UsuarioService extends BasicRestService<Usuario, UsuarioRepository>
         Optional<Usuario> resource = usuarioRepository.findByEmail(email);
         resource.orElseThrow(() -> new EmptyResultDataAccessException(1));
         return resource.get();
+    }
+
+    public Usuario getByToken(JwtAuthenticationToken token)
+    {
+        String userEmail = (String) token.getTokenAttributes().get("email");
+        Usuario usuario = this.getByEmail(userEmail);
+        return usuario;
+    }
+
+    public Collection<Link> getLinkImages(Usuario usuario)
+    {
+        Collection<Link> links = new ArrayList<>();
+
+        for (MidiaUsuario mu : usuario.getImages()) {
+            Link link = midiaService.toLink(mu.getMidia());
+            links.add(link);
+        }
+
+        return links;
     }
 
 
