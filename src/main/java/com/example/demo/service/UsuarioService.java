@@ -69,20 +69,23 @@ public class UsuarioService extends BasicRestService<Usuario, UsuarioRepository>
         return usuarioBanco;
     }
 
-    //TODO: remover dados do servidor de autenticação, quando remover usuario
+
     @Override
-    public Usuario delete(Long id) {
+    public Usuario delete(Long id)
+    {
         super.delete(id);
-        //remover do servidor de autenticação
+        //TODO: remover dados do servidor de autenticação, quando remover usuario
         return null;
     }
 
     @Override
-    public <T> Boolean exists(T condition) {
+    public <T> Boolean exists(T condition)
+    {
         return usuarioRepository.existsByEmail((String)condition);
     }
 
-    public Usuario getByEmail(String email) {
+    public Usuario getByEmail(String email)
+    {
         Optional<Usuario> resource = usuarioRepository.findByEmail(email);
         resource.orElseThrow(() -> new EmptyResultDataAccessException(1));
         return resource.get();

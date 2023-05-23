@@ -8,6 +8,7 @@ import com.example.demo.repository.MidiaRepository;
 import com.example.demo.repository.MidiaUsuarioRepository;
 import com.example.demo.resources.MidiaController;
 import com.example.demo.utils.Bruxaria;
+import org.apache.commons.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.InputStreamResource;
@@ -19,6 +20,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.Optional;
+import java.util.UUID;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
@@ -33,7 +35,8 @@ public class MidiaService extends BasicRestService<Midia, MidiaRepository> {
     private MidiaUsuarioRepository midiaUsuarioRepository;
 
     @Override
-    public Midia save(Midia midia) {
+    public Midia save(Midia midia)
+    {
         if(exists(midia.getFileName()))
             return null;
         return super.save(midia);
@@ -57,7 +60,7 @@ public class MidiaService extends BasicRestService<Midia, MidiaRepository> {
         return link;
     }
 
-    public void saveMediaUsuario(Usuario usuario, Midia midia) {
+    public void saveMidiaUsuario(Usuario usuario, Midia midia) {
         MidiaUsuario midiaUsuario = new MidiaUsuario();
         midiaUsuario.setMidia(midia);
         midiaUsuario.setUsuario(usuario);
@@ -72,16 +75,24 @@ public class MidiaService extends BasicRestService<Midia, MidiaRepository> {
 
     //loads image and create a response entity as IMAGE_JPEG
     public ResponseEntity<InputStreamResource> createResponseImage(String name){
-        //TODO: adicionar checagem se a imagem existe
         var imgFile = new ClassPathResource("image/" + name);
         try {
             return ResponseEntity
                     .ok()
-                    .contentType(MediaType.IMAGE_JPEG)
+                    .contentType(MediaType.IMAGE_PNG)
                     .body(new InputStreamResource(imgFile.getInputStream()));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public String createUUID(Midia midia)
+    {
+        byte[] bytes = Base64.decodeBase64(midia.getFileImage64());
+
+        String midiaFileName = midia.getFileName() + "_"
+                + UUID.nameUUIDFromBytes(bytes).toString();
+        return midiaFileName;
     }
 
     public void createImage(Midia midia) {

@@ -9,9 +9,12 @@ import com.example.demo.repository.MidiaUsuarioRepository;
 import com.example.demo.service.KeycloakService;
 import com.example.demo.service.MidiaService;
 import com.example.demo.service.UsuarioService;
+import com.example.demo.utils.Bruxaria;
 import jakarta.servlet.http.HttpServletResponse;
+import org.apache.commons.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +22,7 @@ import org.springframework.security.oauth2.server.resource.authentication.JwtAut
 import org.springframework.web.bind.annotation.*;
 import java.io.*;
 import java.security.Principal;
+import java.util.UUID;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 
@@ -46,9 +50,8 @@ public class MidiaController extends GenericRestController<Midia, MidiaRepositor
             HttpServletResponse response)
     {
         Midia fromDb = service.save(midia);
-
         if(fromDb == null)
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(null);
+            throw new DataIntegrityViolationException("Recurso já existe");
 
         service.createImage(midia);
         publisher.publishEvent(new RecursoCriadoEvento(this, response, fromDb.getID()));
@@ -59,34 +62,29 @@ public class MidiaController extends GenericRestController<Midia, MidiaRepositor
     public ResponseEntity<InputStreamResource> getImage(
             @PathVariable(name = "name") String name) throws IOException
     {
-        ResponseEntity response = service.createResponseImage(name);
-        return response;
+        return service.createResponseImage(name);
     }
 
     //linka imagem com um usuario que realizou login
     @PostMapping(value = "/usuario")
-    public ResponseEntity<String> addMidiaUsuario(
+    public ResponseEntity<Midia> addMidiaUsuario(
             @RequestBody Midia midia,
             Principal principal,
             HttpServletResponse response)
     {
-        JwtAuthenticationToken token = (JwtAuthenticationToken) principal;
-        String userEmail = (String) token.getTokenAttributes().get("email");
+        Usuario usuario = usuarioService.getByToken((JwtAuthenticationToken) principal);
+        String ext = Bruxaria.getBase64Ext(midia.getFileImage64());
+        midia.setFileName(service.createUUID(midia));
 
-        //saving image and getting user details
-        //TODO: mudar email para id do usuario, se o email mudar as imagens podem ser perdidas
-        midia.setFileName( userEmail + "_" +midia.getFileName());
+        //usando rota de salvamento de imagem e adicionado link de acesso
         ResponseEntity<Midia> resMidia = save(midia, response);
-        Usuario usuario = usuarioService.getByEmail(userEmail);
-
-        //caso a imagem ja exista status de conflito é exibido
-        if(resMidia.getBody() == null)
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(null);
+        resMidia.getBody().setFileName(midia.getFileName() + "." + ext);
+        resMidia.getBody().add(service.toLink(resMidia.getBody()));
+        resMidia.getBody().setFileImage64("****");
 
         //criando tabela de relação
-        service.saveMediaUsuario(usuario, resMidia.getBody());
-        return ResponseEntity.status(HttpStatus.OK).body("");
+        service.saveMidiaUsuario(usuario, resMidia.getBody());
+        return ResponseEntity.status(HttpStatus.CREATED).body(midia);
     }
-
 
 }

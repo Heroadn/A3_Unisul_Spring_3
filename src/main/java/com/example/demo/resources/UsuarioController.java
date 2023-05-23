@@ -28,17 +28,31 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @RequestMapping(path = "/usuario", produces = "application/hal+json")
 public class UsuarioController extends GenericRestController<Usuario, UsuarioRepository, UsuarioService> {
 
-    //metodo retorna um refreshToken
+    /**
+     * metodo que aceita as credencias de login,
+     * e com isso retorna um refresh token que
+     * dura mais tempo que um access token
+     *
+     * @param  usuario dados de login
+     * @return         refresh token usado para obter access token
+     */
     @PostMapping(value = "/login-refresh")
     public ResponseEntity<String> loginRefreshToken(
-            @RequestBody Usuario model,
+            @RequestBody Usuario usuario,
             HttpServletResponse response)
     {
-        String token = service.login(model);
+        String token = service.login(usuario);
         return ResponseEntity.status(HttpStatus.OK).body(token);
     }
 
-    //recebe um refresh token e retorna um access token valido
+    /**
+     * Token necessario para acessar apis com restrição de login
+     * ele tambem contem privilegios de acesso como admin/user,
+     * pode ser usar repetidamente ate o prazo do refreshToken
+     *
+     * @param  refreshToken obtido com dados de login do usuario
+     * @return              access token usado para acessar apis com login
+     */
     @PostMapping(value = "/login-access")
     public ResponseEntity<String> loginAccessToken(
             String refreshToken,
@@ -48,6 +62,12 @@ public class UsuarioController extends GenericRestController<Usuario, UsuarioRep
         return ResponseEntity.status(HttpStatus.OK).body(token);
     }
 
+    /**
+     * Increment a value by delta and return the new value.
+     *
+     * @param  principal    token jwt de acesso
+     * @return              access token usado para acessar apis com login
+     */
     @GetMapping(value = "/meu-usuario")
     public ResponseEntity<UsuarioDTO> meuUsuario(
             Principal principal)
