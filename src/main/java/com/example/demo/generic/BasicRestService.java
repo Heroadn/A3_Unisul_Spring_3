@@ -54,7 +54,7 @@ abstract public class BasicRestService<
 
     @Override
     public <T extends Object> Boolean exists(T condition) {
-        return true;
+        return false;
     }
 
     @Override

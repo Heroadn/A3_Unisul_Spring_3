@@ -69,7 +69,6 @@ public class UsuarioService extends BasicRestService<Usuario, UsuarioRepository>
         return usuarioBanco;
     }
 
-
     @Override
     public Usuario delete(Long id)
     {
