@@ -34,8 +34,12 @@ spring:
     database: MYSQL
     show-sql: true
 
+  flyway:
+    baselineOnMigrate: true
+    enabled: false
+
   datasource:
-    url: jdbc:mariadb://localhost/test_cards1?useTimezone=true&serverTimezone=UTC&createDatabaseIfNotExist=true&useSSL=false
+    url: jdbc:mariadb://localhost/test_cards?useTimezone=true&serverTimezone=UTC&createDatabaseIfNotExist=true&useSSL=false
     driver-class-name: org.mariadb.jdbc.Driver
     username: root
     password: ""
@@ -50,6 +54,4 @@ spring:
       org:
         springframework:
           web=DEBUG:
-  spring:
-    flyway:
-      locations=classpath: "classpath:db/migration/"
+
