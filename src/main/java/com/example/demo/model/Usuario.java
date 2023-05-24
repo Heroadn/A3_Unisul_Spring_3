@@ -1,6 +1,7 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
+import net.minidev.json.annotate.JsonIgnore;
 import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -31,6 +32,7 @@ public class Usuario extends BaseModel {
     @CreationTimestamp
     private LocalDateTime data_criacao;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "usuario")
     private Collection<MidiaUsuario> images;
 

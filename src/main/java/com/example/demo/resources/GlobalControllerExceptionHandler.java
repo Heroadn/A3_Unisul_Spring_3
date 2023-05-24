@@ -1,6 +1,7 @@
 package com.example.demo.resources;
 
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -12,6 +13,13 @@ import javax.ws.rs.NotAuthorizedException;
 
 @RestControllerAdvice
 public class GlobalControllerExceptionHandler {
+
+
+    @ExceptionHandler(value = {EmptyResultDataAccessException.class})
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ResponseEntity<String> emptyResultDataAccessException(EmptyResultDataAccessException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+    }
 
     @ExceptionHandler(value = {NotAuthorizedException.class})
     @ResponseStatus(HttpStatus.UNAUTHORIZED)

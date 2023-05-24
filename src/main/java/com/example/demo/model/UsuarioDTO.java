@@ -9,9 +9,7 @@ import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Set;
 
-public class UsuarioDTO {
-    private Long ID;
-
+public class UsuarioDTO extends BaseModel{
     private String nome;
 
     private String email;
@@ -28,14 +26,6 @@ public class UsuarioDTO {
         this.email = usuario.getEmail();
         this.descricao = usuario.getDescricao();
         this.data_criacao = usuario.getData_criacao();
-    }
-
-    public Long getID() {
-        return ID;
-    }
-
-    public void setID(Long ID) {
-        this.ID = ID;
     }
 
     public String getNome() {
