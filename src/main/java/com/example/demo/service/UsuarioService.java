@@ -1,8 +1,10 @@
 package com.example.demo.service;
 
+import com.example.demo.generic.BasicRestDTOService;
 import com.example.demo.generic.BasicRestService;
 import com.example.demo.model.MidiaUsuario;
 import com.example.demo.model.Usuario;
+import com.example.demo.model.UsuarioDTO;
 import com.example.demo.repository.UsuarioRepository;
 import com.example.demo.resources.MidiaController;
 import org.keycloak.representations.AccessTokenResponse;
@@ -22,7 +24,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @Service
-public class UsuarioService extends BasicRestService<Usuario, UsuarioRepository> {
+public class UsuarioService extends BasicRestDTOService<Usuario, UsuarioDTO, UsuarioRepository> {
     @Autowired
     private KeycloakService keycloakService;
 
@@ -34,7 +36,7 @@ public class UsuarioService extends BasicRestService<Usuario, UsuarioRepository>
 
 
     @Override
-    public Usuario save(Usuario usuario) {
+    public UsuarioDTO save(Usuario usuario) {
         if (exists(usuario.getEmail()))
             return null;
 
@@ -66,39 +68,41 @@ public class UsuarioService extends BasicRestService<Usuario, UsuarioRepository>
         //removing secret fields
         usuarioBanco.setToken("******");
         usuarioBanco.setSenha("******");
-        return usuarioBanco;
+        return toDTO(usuarioBanco);
     }
 
     @Override
-    public Usuario delete(Long id)
-    {
+    public UsuarioDTO delete(Long id) {
         super.delete(id);
         //TODO: remover dados do servidor de autenticação, quando remover usuario
         return null;
     }
 
     @Override
-    public <T> Boolean exists(T condition)
-    {
+    public <T> Boolean exists(T condition) {
         return usuarioRepository.existsByEmail((String)condition);
     }
 
-    public Usuario getByEmail(String email)
-    {
+    @Override
+    public UsuarioDTO toDTO(Usuario usuario) {
+        UsuarioDTO usuarioDTO = new UsuarioDTO(usuario);
+        usuarioDTO.setImages(this.getLinkImages(usuario));
+        return usuarioDTO;
+    }
+
+    public Usuario getByEmail(String email) {
         Optional<Usuario> resource = usuarioRepository.findByEmail(email);
         resource.orElseThrow(() -> new EmptyResultDataAccessException(1));
         return resource.get();
     }
 
-    public Usuario getByToken(JwtAuthenticationToken token)
-    {
+    public Usuario getByToken(JwtAuthenticationToken token) {
         String userEmail = (String) token.getTokenAttributes().get("email");
         Usuario usuario = this.getByEmail(userEmail);
         return usuario;
     }
 
-    public Collection<Link> getLinkImages(Usuario usuario)
-    {
+    public Collection<Link> getLinkImages(Usuario usuario) {
         Collection<Link> links = new ArrayList<>();
 
         for (MidiaUsuario mu : usuario.getImages()) {
@@ -109,21 +113,17 @@ public class UsuarioService extends BasicRestService<Usuario, UsuarioRepository>
         return links;
     }
 
-
-    public String login(Usuario usuario)
-    {
+    public String login(Usuario usuario) {
         //TODO: mensagem de erro ao login falhar
         //classe que gera exception ao falhar, javax.ws.rs.NotAuthorizedException: HTTP 401 Unauthorized
         AccessTokenResponse response = keycloakService.getAccessToken(usuario);
         return keycloakService.getAccessToken(usuario).getRefreshToken();
     }
 
-    public String getAccessToken(String refreshToken)
-    {
+    public String getAccessToken(String refreshToken) {
         //TODO: verificar por errors
         return keycloakService.requestAccessToken(refreshToken);
     }
-
 
     private String generteRandomCode(int size){
         return ""+ (size * Math.random());
