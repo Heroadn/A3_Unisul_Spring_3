@@ -73,11 +73,11 @@ public class MidiaController extends GenericRestController<Midia, MidiaRepositor
             HttpServletResponse response)
     {
         Usuario usuario = usuarioService.getByToken((JwtAuthenticationToken) principal);
-        String ext = Bruxaria.getBase64Ext(midia.getFileImage64());
         midia.setFileName(service.createUUID(midia));
 
         //usando rota de salvamento de imagem e adicionado link de acesso
         ResponseEntity<Midia> resMidia = save(midia, response);
+        String ext = Bruxaria.getBase64Ext(midia.getFileImage64());
         resMidia.getBody().setFileName(midia.getFileName() + "." + ext);
         resMidia.getBody().add(service.toLink(resMidia.getBody()));
         resMidia.getBody().setFileImage64("****");

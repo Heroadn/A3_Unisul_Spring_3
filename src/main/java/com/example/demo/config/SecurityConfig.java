@@ -47,7 +47,8 @@ public class SecurityConfig {
             "/test/anonymous",
             "/test/anonymous/**",
             "/test/register/",
-            "/test/register/**"
+            "/test/register/**",
+            "/midia/**"
     };
 
     private static final String[] POST_AUTH_WHITELIST = {

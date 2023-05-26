@@ -1,16 +1,11 @@
 package com.example.demo.resources;
 
-import com.example.demo.generic.GenericRestController;
 import com.example.demo.generic.GenericRestDTOController;
-import com.example.demo.model.MidiaUsuario;
 import com.example.demo.model.Usuario;
 import com.example.demo.model.UsuarioDTO;
 import com.example.demo.repository.UsuarioRepository;
 import com.example.demo.service.UsuarioService;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.hateoas.Link;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
@@ -21,8 +16,6 @@ import java.security.Principal;
 @RequestMapping(path = "/usuario", produces = "application/hal+json")
 public class UsuarioController extends GenericRestDTOController<Usuario, UsuarioDTO,UsuarioRepository, UsuarioService> {
 
-    //TODO: criar genericRestControllerDTO -> que trabalha com DTO
-    //TODO: criar genericServiceDRTO com metodo q converte um Model a um ModelDTO
     /**
      * metodo que aceita as credencias de login,
      * e com isso retorna um refresh token que

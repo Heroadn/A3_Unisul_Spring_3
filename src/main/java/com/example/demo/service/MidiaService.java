@@ -19,6 +19,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -89,9 +91,7 @@ public class MidiaService extends BasicRestService<Midia, MidiaRepository> {
     public String createUUID(Midia midia)
     {
         byte[] bytes = Base64.decodeBase64(midia.getFileImage64());
-
-        String midiaFileName = midia.getFileName() + "_"
-                + UUID.nameUUIDFromBytes(bytes).toString();
+        String midiaFileName = UUID.nameUUIDFromBytes(bytes).toString();
         return midiaFileName;
     }
 

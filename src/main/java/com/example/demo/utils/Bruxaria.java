@@ -40,11 +40,13 @@ public class Bruxaria {
         return name + "." + ext;
     }
 
-    public static void writeBase64ImageToPath(String base64Image, String outPath)
+    public static void writeBase64ImageToPath(String base64Image, String path)
     {
         byte[] bytes = Base64.decodeBase64(base64Image);
+        //File file = new File("newimage.png");
+        //ImageIO.write(myJpegImage, "png", file);
 
-        try (OutputStream stream = new FileOutputStream(outPath)) {
+        try (OutputStream stream = new FileOutputStream(path)) {
             stream.write(bytes);
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
