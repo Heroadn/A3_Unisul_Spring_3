@@ -102,12 +102,12 @@ public class UsuarioService extends BasicRestDTOService<Usuario, UsuarioDTO, Usu
         return usuario;
     }
 
-    public Collection<Link> getLinkImages(Usuario usuario) {
-        Collection<Link> links = new ArrayList<>();
+    public Collection<String> getLinkImages(Usuario usuario) {
+        Collection<String> links = new ArrayList<>();
 
         for (MidiaUsuario mu : usuario.getImages()) {
             Link link = midiaService.toLink(mu.getMidia());
-            links.add(link);
+            links.add(link.getHref());
         }
 
         return links;

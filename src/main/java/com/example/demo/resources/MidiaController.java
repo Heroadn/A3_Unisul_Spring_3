@@ -11,7 +11,6 @@ import com.example.demo.service.MidiaService;
 import com.example.demo.service.UsuarioService;
 import com.example.demo.utils.Bruxaria;
 import jakarta.servlet.http.HttpServletResponse;
-import org.apache.commons.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -22,7 +21,6 @@ import org.springframework.security.oauth2.server.resource.authentication.JwtAut
 import org.springframework.web.bind.annotation.*;
 import java.io.*;
 import java.security.Principal;
-import java.util.UUID;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 
@@ -58,7 +56,7 @@ public class MidiaController extends GenericRestController<Midia, MidiaRepositor
         return ResponseEntity.status(HttpStatus.CREATED).body(fromDb);
     }
 
-    @GetMapping(value = "/image/{name}", produces = MediaType.IMAGE_PNG_VALUE)
+    @GetMapping(value = "/static/{name}", produces = MediaType.IMAGE_PNG_VALUE)
     public ResponseEntity<InputStreamResource> getImage(
             @PathVariable(name = "name") String name) throws IOException
     {

@@ -15,7 +15,10 @@ repositories {
 
 ext {
 	set('snippetsDir', file("build/generated-snippets"))
+	resourcesDir = projectDir.path + "/upload"
 }
+
+
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-hateoas'
@@ -54,4 +57,14 @@ tasks.named('asciidoctor') {
 	inputs.dir snippetsDir
 	dependsOn test
 }
+
+//task copynonJavafile<< {
+//	copy{
+//		from("src"){
+//			exclude '**/*.java' }
+//		into("build/upload/")
+//	}
+//}
+
+//jar.dependsOn copynonJavafile
 

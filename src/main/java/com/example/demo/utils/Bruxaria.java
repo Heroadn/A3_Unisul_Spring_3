@@ -6,8 +6,7 @@ import org.springframework.core.io.ClassPathResource;
 import java.io.*;
 
 public class Bruxaria {
-
-    private static final String IMAGE_PATH = "/image/";
+    public static final String IMAGE_PATH = "upload/";
     public static String getBase64Ext(String base64)
     {
         return base64.substring(
@@ -30,9 +29,10 @@ public class Bruxaria {
 
     public static String getAbsoluteImagePath()
     {
-        ClassPathResource tmpPath = new ClassPathResource("src/main/resources");
+        //ClassPathResource tmpPath = new ClassPathResource("src/main/resources");
+        ClassPathResource tmpPath = new ClassPathResource(IMAGE_PATH);
         File outPath = new File(tmpPath.getPath());
-        return outPath.getAbsolutePath() + IMAGE_PATH;
+        return outPath.getAbsolutePath() + "/";
     }
 
     public static String toImageFilename(String name, String ext)

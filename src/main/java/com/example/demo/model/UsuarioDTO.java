@@ -18,7 +18,7 @@ public class UsuarioDTO extends BaseModel{
 
     private LocalDateTime data_criacao;
 
-    private Collection<Link> images;
+    private Collection<String> images;
 
     public UsuarioDTO(Usuario usuario) {
         this.ID = usuario.getID();
@@ -60,11 +60,11 @@ public class UsuarioDTO extends BaseModel{
         this.data_criacao = data_criacao;
     }
 
-    public Collection<Link> getImages() {
+    public Collection<String> getImages() {
         return images;
     }
 
-    public void setImages(Collection<Link> images) {
+    public void setImages(Collection<String> images) {
         this.images = images;
     }
 

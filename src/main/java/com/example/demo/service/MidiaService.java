@@ -18,12 +18,14 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.io.InputStream;
 import java.util.Optional;
 import java.util.UUID;
 
+import static com.example.demo.utils.Bruxaria.getAbsoluteImagePath;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
@@ -77,12 +79,15 @@ public class MidiaService extends BasicRestService<Midia, MidiaRepository> {
 
     //loads image and create a response entity as IMAGE_JPEG
     public ResponseEntity<InputStreamResource> createResponseImage(String name){
-        var imgFile = new ClassPathResource("image/" + name);
+        File file = new File(Bruxaria.getAbsoluteImagePath() + name);
+
         try {
+            InputStream imgFile = new FileInputStream(file);
+
             return ResponseEntity
                     .ok()
                     .contentType(MediaType.IMAGE_PNG)
-                    .body(new InputStreamResource(imgFile.getInputStream()));
+                    .body(new InputStreamResource(imgFile));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -101,7 +106,7 @@ public class MidiaService extends BasicRestService<Midia, MidiaRepository> {
         String ext = Bruxaria.getBase64Ext(base64);
 
         //monta o fileName + ext, para o diretorio de imagens
-        String outPath = Bruxaria.getAbsoluteImagePath()
+        String outPath = getAbsoluteImagePath()
                 + Bruxaria.toImageFilename(midia.getFileName(), ext);
         Bruxaria.writeBase64ImageToPath(base64Image, outPath);
     }
