@@ -1,0 +1,102 @@
+{
+  "realm" : "SpringBootKeycloak",
+  "users" : [ {
+    "id" : "318e5c76-1655-4b99-9cb6-be4c6e761ba2",
+    "createdTimestamp" : 1680187357308,
+    "username" : "globaladmin",
+    "enabled" : true,
+    "totp" : false,
+    "emailVerified" : true,
+    "firstName" : "",
+    "lastName" : "",
+    "email" : "globaladmin@globaladmin.com",
+    "credentials" : [ {
+      "id" : "377a0ac8-005d-4a67-8692-8d23b93862aa",
+      "type" : "password",
+      "userLabel" : "My password",
+      "createdDate" : 1680187407286,
+      "secretData" : "{\"value\":\"JxPJKFyq6WBbAGSrO4uJqLE0kL4sI2bmWBnAfABZSQE=\",\"salt\":\"LoA97GUfCPfW/egD8ROrFw==\",\"additionalParameters\":{}}",
+      "credentialData" : "{\"hashIterations\":27500,\"algorithm\":\"pbkdf2-sha256\",\"additionalParameters\":{}}"
+    } ],
+    "disableableCredentialTypes" : [ ],
+    "requiredActions" : [ ],
+    "realmRoles" : [ "app_admin", "default-roles-springbootkeycloak" ],
+    "notBefore" : 0,
+    "groups" : [ "/default" ]
+  }, {
+    "id" : "ce9613e9-3ce4-4570-af2b-d4eee95ccc0d",
+    "createdTimestamp" : 1680209047270,
+    "username" : "teste",
+    "enabled" : true,
+    "totp" : false,
+    "emailVerified" : true,
+    "firstName" : "",
+    "lastName" : "",
+    "email" : "teste@email.com",
+    "credentials" : [ {
+      "id" : "5bca6da8-2bd1-4ec6-8fe8-5fdc2c283327",
+      "type" : "password",
+      "userLabel" : "My password",
+      "createdDate" : 1680209088437,
+      "secretData" : "{\"value\":\"yZIaZPeYBnqiBpmjl3QhceDy27d3RnBackOTCnvBM1w=\",\"salt\":\"BmQ1AHYUwFecxtA5uHoXYA==\",\"additionalParameters\":{}}",
+      "credentialData" : "{\"hashIterations\":27500,\"algorithm\":\"pbkdf2-sha256\",\"additionalParameters\":{}}"
+    } ],
+    "disableableCredentialTypes" : [ ],
+    "requiredActions" : [ ],
+    "realmRoles" : [ "default-roles-springbootkeycloak", "app_user" ],
+    "notBefore" : 0,
+    "groups" : [ "/default" ]
+  }, {
+    "id" : "72d20068-6908-48a6-953a-ed4a3558b274",
+    "createdTimestamp" : 1680740034785,
+    "username" : "testeasdsasad",
+    "enabled" : true,
+    "totp" : false,
+    "emailVerified" : true,
+    "firstName" : "Resource ID",
+    "lastName" : "16",
+    "email" : "email@email.com",
+    "attributes" : {
+      "customAttribute" : [ "customAttribute" ]
+    },
+    "credentials" : [ {
+      "id" : "d9ee52e7-1f69-41dc-9107-c01dd1a06a73",
+      "type" : "password",
+      "createdDate" : 1680740034960,
+      "secretData" : "{\"value\":\"ospcM1B+N5yEmX7TepuiyHz5txjqn0y26Av7Ru5ZhTA=\",\"salt\":\"RtTUBEq1YU9/69KvXnliMw==\",\"additionalParameters\":{}}",
+      "credentialData" : "{\"hashIterations\":27500,\"algorithm\":\"pbkdf2-sha256\",\"additionalParameters\":{}}"
+    } ],
+    "disableableCredentialTypes" : [ ],
+    "requiredActions" : [ ],
+    "realmRoles" : [ "default-roles-springbootkeycloak" ],
+    "notBefore" : 0,
+    "groups" : [ "/default" ]
+  }, {
+    "id" : "a594764a-6c16-4d62-a45d-3e184c9a73b2",
+    "createdTimestamp" : 1680306007988,
+    "username" : "user",
+    "enabled" : true,
+    "totp" : false,
+    "emailVerified" : true,
+    "firstName" : "a",
+    "lastName" : "b",
+    "email" : "admin@admin.com",
+    "credentials" : [ {
+      "id" : "5b6116e4-355c-474e-ab62-1a6e723a2287",
+      "type" : "password",
+      "userLabel" : "My password",
+      "createdDate" : 1680306052272,
+      "secretData" : "{\"value\":\"E/CAQxsAO8KHUkYXUJQFjeo+t3JegCmedRyZAhpnqAk=\",\"salt\":\"dXhG3S8YvpP2SZvPgEw9Fw==\",\"additionalParameters\":{}}",
+      "credentialData" : "{\"hashIterations\":27500,\"algorithm\":\"pbkdf2-sha256\",\"additionalParameters\":{}}"
+    } ],
+    "disableableCredentialTypes" : [ ],
+    "requiredActions" : [ ],
+    "realmRoles" : [ "app_admin", "default-roles-springbootkeycloak", "uma_authorization" ],
+    "clientRoles" : {
+      "realm-management" : [ "realm-admin", "query-realms", "query-groups", "manage-authorization", "query-clients", "manage-clients", "manage-events", "query-users" ],
+      "account" : [ "manage-account", "view-applications", "view-groups", "manage-consent", "view-profile", "manage-account-links", "view-consent" ]
+    },
+    "notBefore" : 0,
+    "groups" : [ "/default" ]
+  } ]
+}
