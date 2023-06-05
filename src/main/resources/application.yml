@@ -1,5 +1,8 @@
 server:
   port: 8081
+  hostNameResource: localhost
+  hostNameDb:   localhost
+  hostNameAuth: localhost
 
 jwt:
   auth:
@@ -15,9 +18,9 @@ spring:
         registration:
           keycloak:
             client-id: springboot-keycloak-client
-            auth-server-url: http://localhost:8080/auth
+            auth-server-url: http://${server.hostNameAuth}:8080/auth
+            server-url: http://${server.hostNameAuth}:8080
             authorization-grant-type: authorization_code
-            server-url: http://localhost:8080
             realm: SpringBootKeycloak
             username: user
             password: user
@@ -25,10 +28,10 @@ spring:
             bearer-only: true
         provider:
           keycloak:
-            issuer-uri:  http://localhost:8080/realms/SpringBootKeycloak
+            issuer-uri:  ${spring.security.oauth2.client.registration.keycloak.server-url}/realms/SpringBootKeycloak
       resourceserver:
         jwt:
-          issuer-uri:  http://localhost:8080/realms/SpringBootKeycloak
+          issuer-uri:  ${spring.security.oauth2.client.registration.keycloak.server-url}/realms/SpringBootKeycloak
           jwk-set-uri: ${spring.security.oauth2.resourceserver.jwt.issuer-uri}/protocol/openid-connect/certs
   jpa:
     database: MYSQL
@@ -36,13 +39,16 @@ spring:
 
   flyway:
     baselineOnMigrate: true
-    enabled: false
+    enabled: true
 
   datasource:
-    url: jdbc:mariadb://localhost/test_cards?useTimezone=true&serverTimezone=UTC&createDatabaseIfNotExist=true&useSSL=false
+    url: jdbc:mariadb://${server.hostNameDb}/${spring.datasource.scheme}${spring.datasource.args}
     driver-class-name: org.mariadb.jdbc.Driver
     username: root
-    password: ""
+    password: "root"
+    port: 3306
+    scheme: test_cards
+    args:  ?useTimezone=true&serverTimezone=UTC&createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true
 
   jackson:
     deserialization.fail-on-unknown-properties: true
