@@ -2,6 +2,7 @@ package com.example.demo.generic;
 
 import com.example.demo.event.RecursoCriadoEvento;
 import com.example.demo.model.BaseModel;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
@@ -55,7 +56,7 @@ abstract public class GenericRestController
 
     @Override
     @PostMapping
-    public ResponseEntity<Model> save(Model model, HttpServletResponse response) {
+    public ResponseEntity<Model> save(Model model, HttpServletResponse response, HttpServletRequest request) {
         Model fromDb = service.save(model);
 
         //Caso o usuario ja exista é provavel q save retorne null

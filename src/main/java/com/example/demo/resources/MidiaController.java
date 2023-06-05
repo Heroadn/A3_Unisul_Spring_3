@@ -10,6 +10,7 @@ import com.example.demo.service.KeycloakService;
 import com.example.demo.service.MidiaService;
 import com.example.demo.service.UsuarioService;
 import com.example.demo.utils.Bruxaria;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
@@ -45,7 +46,8 @@ public class MidiaController extends GenericRestController<Midia, MidiaRepositor
     @PostMapping
     public ResponseEntity<Midia> save(
             Midia midia,
-            HttpServletResponse response)
+            HttpServletResponse response,
+            HttpServletRequest request)
     {
         Midia fromDb = service.save(midia);
         if(fromDb == null)
@@ -68,13 +70,14 @@ public class MidiaController extends GenericRestController<Midia, MidiaRepositor
     public ResponseEntity<Midia> addMidiaUsuario(
             @RequestBody Midia midia,
             Principal principal,
-            HttpServletResponse response)
+            HttpServletResponse response,
+            HttpServletRequest request)
     {
         Usuario usuario = usuarioService.getByToken((JwtAuthenticationToken) principal);
         midia.setFileName(service.createUUID(midia));
 
         //usando rota de salvamento de imagem e adicionado link de acesso
-        ResponseEntity<Midia> resMidia = save(midia, response);
+        ResponseEntity<Midia> resMidia = save(midia, response, request);
         String ext = Bruxaria.getBase64Ext(midia.getFileImage64());
         resMidia.getBody().setFileName(midia.getFileName() + "." + ext);
         resMidia.getBody().add(service.toLink(resMidia.getBody()));
