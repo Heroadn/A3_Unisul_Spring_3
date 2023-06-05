@@ -11,7 +11,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 //http://localhost:8081/swagger-ui/index.html
 @SpringBootApplication
 @EnableConfigurationProperties
-//@EnableJpaRepositories("com.example.demo.repository")
 public class DemoApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(DemoApplication.class, args);
