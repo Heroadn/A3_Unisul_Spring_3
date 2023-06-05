@@ -3,6 +3,8 @@ plugins {
 	id 'org.springframework.boot' version '3.0.0'
 	id 'io.spring.dependency-management' version "1.0.11.RELEASE"
 	id "org.asciidoctor.jvm.convert" version "4.0.0-alpha.1"
+	id "com.palantir.docker" version "0.35.0"
+	id "com.palantir.docker-run" version "0.35.0"
 }
 
 group = 'com.example'
@@ -17,8 +19,6 @@ ext {
 	set('snippetsDir', file("build/generated-snippets"))
 	resourcesDir = projectDir.path + "/upload"
 }
-
-
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-hateoas'
@@ -46,6 +46,23 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
 	testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
+}
+
+docker {
+	name = "${project.name}:${project.version}"
+	uri("${project.name}:${project.version}")
+	copySpec.from("build").into("build")
+	pull(true)
+	setDockerfile(file("Dockerfile"))
+}
+
+dockerRun {
+	name "${project.name}"
+	image "${project.name}:${project.version}"
+	ports '8081:8081'
+	//network 'host'
+	//env 'KEY': 'abcdefgh'
+	//#clean true
 }
 
 tasks.named('test') {

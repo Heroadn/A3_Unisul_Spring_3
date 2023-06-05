@@ -1,0 +1,51 @@
+version: '3'
+
+services:
+  mysql:
+    container_name: mysql
+    image: mysql:latest
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_USER=admin
+      - MYSQL_PASSWORD=root
+    ports:
+      - "3306:3306"
+    networks:
+      - backend
+    command: ['mysqld', '--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci']
+  postgres:
+    image: postgres
+    volumes:
+      - .docker/db/postgres:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: keycloak
+      POSTGRES_USER: keycloak
+      POSTGRES_PASSWORD: password
+    networks:
+      - backend
+  keycloak:
+    image: quay.io/keycloak/keycloak:21.0.1
+    environment:
+      KEYCLOAK_ADMIN: user
+      KEYCLOAK_ADMIN_PASSWORD: user
+      DB_VENDOR: POSTGRES
+      DB_ADDR: postgres
+      DB_DATABASE: keycloak
+      DB_USER: keycloak
+      DB_SCHEMA: public
+      DB_PASSWORD: password
+      KEYCLOAK_USER: admin
+      KEYCLOAK_PASSWORD: admin
+    command:
+      start-dev
+      "--import-realm"
+    volumes:
+      - ".docker/keycloak:/opt/keycloak/data/import/"
+    ports:
+      - '8080:8080'
+    depends_on:
+      - postgres
+    networks:
+      - backend
+networks:
+  backend:
