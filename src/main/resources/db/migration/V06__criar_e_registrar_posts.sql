@@ -3,6 +3,6 @@ create table post(
     `titulo` VARCHAR(80),
     `texto` TEXT,
     `data_post` DATETIME NOT NULL,
-    `id_usuario` INTEGER,
-    FOREIGN KEY (`id_usuario`) references `usuario`(`id`)
+    `usuario_id` INTEGER,
+    FOREIGN KEY (`usuario_id`) references `usuario`(`id`)
 );

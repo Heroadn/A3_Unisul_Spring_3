@@ -1,8 +1,18 @@
+create table `atributo_pokemon`(
+    `id`	        INTEGER PRIMARY KEY AUTO_INCREMENT,
+	`sexo`      	CHAR(1)  NOT NULL,
+	`tipo`      	VARCHAR(50)  NOT NULL,
+	`geracao`      	VARCHAR(50)  NOT NULL,
+    `ataque_minimo`    INTEGER NOT NULL,
+	`ataque_maximo`    INTEGER NOT NULL,
+    `defesa_minimo`    INTEGER NOT NULL,
+	`defesa_maximo`    INTEGER NOT NULL
+);
+
 create table `pokemon`(
-    `id`        INTEGER PRIMARY KEY AUTO_INCREMENT,
-    `nome`      VARCHAR(50)  NOT NULL,
-    `descricao` VARCHAR(50) ,
-    `ataque`    INTEGER NOT NULL,
-    `defesa`    INTEGER NOT NULL,
-    `tipo`      VARCHAR(100)
+    `id`            INTEGER PRIMARY KEY AUTO_INCREMENT,
+    `nome`          VARCHAR(50)  NOT NULL,
+    `descricao`     VARCHAR(50) ,
+    `atributo_id`	INTEGER  NOT NULL,
+     FOREIGN KEY (atributo_id) REFERENCES atributo_pokemon(id)
 );

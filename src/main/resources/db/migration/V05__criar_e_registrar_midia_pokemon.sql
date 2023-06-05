@@ -1,4 +1,4 @@
-create table midia_usuario(
+create table midia_pokemon(
 	id INTEGER PRIMARY KEY AUTO_INCREMENT,
 	data_alteracao DATETIME NOT NULL,
 	midia_id   INTEGER NOT NULL,
