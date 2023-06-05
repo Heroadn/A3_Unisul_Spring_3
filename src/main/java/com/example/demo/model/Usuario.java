@@ -23,7 +23,7 @@ public class Usuario extends BaseModel {
     @Column(unique=true, nullable=false)
     private String email;
 
-    @Column(nullable=false)
+    @Column(nullable=false, length = 255)
     private String descricao;
 
     @Column(nullable=false)

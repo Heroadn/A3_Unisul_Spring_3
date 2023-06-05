@@ -9,6 +9,7 @@ import com.example.demo.repository.UsuarioRepository;
 import com.example.demo.resources.MidiaController;
 import org.keycloak.representations.AccessTokenResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.hateoas.Link;
 import org.springframework.http.HttpStatus;
@@ -53,8 +54,8 @@ public class UsuarioService extends BasicRestDTOService<Usuario, UsuarioDTO, Usu
 
         //if the user already exists in keycloaker
         if (response == HttpStatus.CONFLICT.value()) {
-            System.out.println("User already exists in auth server");
-            return null;
+            usuarioRepository.delete(usuario);
+            throw new DataIntegrityViolationException("User already exists in auth server");
         }
 
         //if the auth server could not create
@@ -65,9 +66,6 @@ public class UsuarioService extends BasicRestDTOService<Usuario, UsuarioDTO, Usu
             return null;
         }
 
-        //removing secret fields
-        usuarioBanco.setToken("******");
-        usuarioBanco.setSenha("******");
         return toDTO(usuarioBanco);
     }
 
@@ -105,10 +103,11 @@ public class UsuarioService extends BasicRestDTOService<Usuario, UsuarioDTO, Usu
     public Collection<String> getLinkImages(Usuario usuario) {
         Collection<String> links = new ArrayList<>();
 
-        for (MidiaUsuario mu : usuario.getImages()) {
-            Link link = midiaService.toLink(mu.getMidia());
-            links.add(link.getHref());
-        }
+        if(usuario.getImages() != null)
+            for (MidiaUsuario mu : usuario.getImages()) {
+                Link link = midiaService.toLink(mu.getMidia());
+                links.add(link.getHref());
+            }
 
         return links;
     }
