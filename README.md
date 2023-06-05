@@ -36,5 +36,21 @@ src/main/resources/db/migration
 >*   Resolver TODOS, redundancias no application.yml
 >*   Levantamento de bugs e erros.
 >*   Correção de bugs e erros.
-                
+
+**DOCKER**
+
+## Iniciar serviços
+```bash
+docker-compose up -d
+```
+
+## Iniciar backend
+```bash
+./run.bat
+```
+
+## Parar serviços
+```bash
+docker-compose down
+```
 
