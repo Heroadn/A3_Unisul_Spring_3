@@ -1,5 +1,6 @@
 package com.example.demo.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import net.minidev.json.annotate.JsonIgnore;
 import org.hibernate.annotations.CreationTimestamp;
@@ -10,16 +11,16 @@ import java.util.Collection;
 @Entity
 @Table(name ="post")
 public class Post extends BaseModel {
-    @Column(unique = true, nullable=false)
+    @Column(name="titulo", nullable=false)
     private String titulo;
 
-    @Column(unique=true, nullable=false)
+    @Column(nullable=false)
     private String texto;
 
     @CreationTimestamp
     private LocalDateTime data_post;
 
-    @JoinColumn(name = "id_usuario")
+    @JoinColumn(name = "usuario_id")
     @OneToOne(cascade = CascadeType.ALL)
     private Usuario usuario;
 
@@ -50,10 +51,6 @@ public class Post extends BaseModel {
 
     public void setData_post(LocalDateTime data_post) {
         this.data_post = data_post;
-    }
-
-    public Usuario getUsuario() {
-        return usuario;
     }
 
     public void setUsuario(Usuario usuario) {

@@ -20,6 +20,8 @@ public class UsuarioDTO extends BaseModel{
 
     private Collection<String> images;
 
+    private Collection<Post> posts;
+
     public UsuarioDTO(Usuario usuario) {
         this.ID = usuario.getID();
         this.nome = usuario.getNome();
@@ -68,5 +70,11 @@ public class UsuarioDTO extends BaseModel{
         this.images = images;
     }
 
+    public Collection<Post> getPosts() {
+        return posts;
+    }
 
+    public void setPosts(Collection<Post> posts) {
+        this.posts = posts;
+    }
 }

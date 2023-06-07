@@ -18,6 +18,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -26,6 +28,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.security.Principal;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 
 //controller responsavel por salvar imagens
@@ -53,6 +58,15 @@ public class PostController extends GenericRestController<Post, PostRepository, 
         post.setUsuario(usuario);
 
         return super.save(post, response, request);
+    }
+
+    @GetMapping(value = "/usuario/{id}")
+    public ResponseEntity<Page<Post>> findAllByUsuario(
+            Pageable pageable,
+            @PathVariable(name = "id") Long usuarioId) {
+
+        Page<Post> list = postService.findAllPostsByUsuarioID(usuarioId, pageable);
+        return ResponseEntity.status(HttpStatus.CREATED).body(list);
     }
 
 }

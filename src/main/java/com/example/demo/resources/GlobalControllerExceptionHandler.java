@@ -14,6 +14,11 @@ import javax.ws.rs.NotAuthorizedException;
 @RestControllerAdvice
 public class GlobalControllerExceptionHandler {
 
+    @ExceptionHandler(value = java.sql.SQLSyntaxErrorException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public ResponseEntity<String> sqlSyntaxErrorException(java.sql.SQLSyntaxErrorException ex) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ex.getMessage());
+    }
 
     @ExceptionHandler(value = {EmptyResultDataAccessException.class})
     @ResponseStatus(HttpStatus.NOT_FOUND)

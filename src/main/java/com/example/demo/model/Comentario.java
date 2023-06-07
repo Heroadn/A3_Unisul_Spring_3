@@ -9,33 +9,22 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name ="comentario")
 public class Comentario extends BaseModel {
-    @Column(unique = true, nullable=false)
-    private String titulo;
-
     @Column(unique=true, nullable=false)
     private String texto;
 
     @CreationTimestamp
     private LocalDateTime data_comentario;
 
-    @JoinColumn(name = "id_usuario")
+    @JoinColumn(name = "usuario_id")
     @OneToOne(cascade = CascadeType.ALL)
     private Usuario usuario;
 
     @JsonIgnore
-    @JoinColumn(name = "id_post")
+    @JoinColumn(name = "post_id")
     @OneToOne(cascade = CascadeType.ALL)
     private Post post;
 
     public Comentario() {}
-
-    public String getTitulo() {
-        return titulo;
-    }
-
-    public void setTitulo(String titulo) {
-        this.titulo = titulo;
-    }
 
     public String getTexto() {
         return texto;

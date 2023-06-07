@@ -1,5 +1,7 @@
 package com.example.demo.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import net.minidev.json.annotate.JsonIgnore;
 import org.hibernate.annotations.CreationTimestamp;
@@ -35,6 +37,9 @@ public class Usuario extends BaseModel {
     @JsonIgnore
     @OneToMany(mappedBy = "usuario")
     private Collection<MidiaUsuario> images;
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "usuario")
+    private Collection<Post> posts;
 
     //password is stored into authorization server
     //field purpose is just to receive when post request
@@ -98,5 +103,13 @@ public class Usuario extends BaseModel {
     public void addMidiaUsuario(MidiaUsuario midiaUsuario)
     {
         images.add(midiaUsuario);
+    }
+
+    public Collection<Post> getPosts() {
+        return posts;
+    }
+
+    public void setPosts(Collection<Post> posts) {
+        this.posts = posts;
     }
 }

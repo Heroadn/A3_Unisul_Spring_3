@@ -3,10 +3,12 @@ package com.example.demo.service;
 import com.example.demo.generic.BasicRestDTOService;
 import com.example.demo.generic.BasicRestService;
 import com.example.demo.model.MidiaUsuario;
+import com.example.demo.model.Post;
 import com.example.demo.model.Usuario;
 import com.example.demo.model.UsuarioDTO;
 import com.example.demo.repository.UsuarioRepository;
 import com.example.demo.resources.MidiaController;
+import org.hibernate.event.spi.SaveOrUpdateEvent;
 import org.keycloak.representations.AccessTokenResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -85,6 +87,8 @@ public class UsuarioService extends BasicRestDTOService<Usuario, UsuarioDTO, Usu
     public UsuarioDTO toDTO(Usuario usuario) {
         UsuarioDTO usuarioDTO = new UsuarioDTO(usuario);
         usuarioDTO.setImages(this.getLinkImages(usuario));
+        usuarioDTO.setPosts(usuario.getPosts());
+
         return usuarioDTO;
     }
 

@@ -14,6 +14,8 @@ import org.apache.commons.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.Link;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -41,4 +43,8 @@ public class PostService extends BasicRestService<Post, PostRepository> {
         return false;
     }
 
+    public Page<Post> findAllPostsByUsuarioID(Long id, Pageable pageable)
+    {
+        return postRepository.findAllByUsuarioID(id, pageable);
+    }
 }
