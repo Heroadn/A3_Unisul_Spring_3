@@ -1,6 +1,7 @@
 package com.example.demo.generic;
 
 import com.example.demo.model.BaseModel;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.Banner;
@@ -56,7 +57,7 @@ abstract public class BasicRestDTOService<
     }
 
     @Override
-    public DTO update(Model resource, Long id,String... ignoredProperties) {
+    public DTO update(Model resource, Long id,String[] ignoredProperties, HttpServletRequest request) {
         Optional<Model> fromDb = repo.findById(id);
         fromDb.orElseThrow(() -> new EmptyResultDataAccessException(1));
 
@@ -64,16 +65,16 @@ abstract public class BasicRestDTOService<
             BeanUtils.copyProperties(resource, fromDb, resource.getIgnored());
         }
 
-        return toDTO((Model)repo.save(fromDb));
+        return toDTO((Model)repo.save(fromDb.get()));
     }
 
     @Override
-    public DTO delete(Long id) {
+    public DTO delete(Long id, HttpServletRequest request) {
         Optional<Model> fromDb = repo.findById(id);
         fromDb.orElseThrow(() -> new EmptyResultDataAccessException(1));
 
         DTO dto = toDTO(fromDb.get());
-        repo.delete(fromDb);
+        repo.delete(fromDb.get());
         return dto;
     }
 

@@ -2,6 +2,7 @@ package com.example.demo.generic;
 
 import com.example.demo.event.RecursoCriadoEvento;
 import com.example.demo.model.BaseModel;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
@@ -67,16 +68,16 @@ abstract public class GenericRestDTOController
 
     @Override
     @PutMapping(value = "/{id}")
-    public ResponseEntity<DTO> update(@PathVariable long id, Model model) {
-        DTO updated = service.update(model,id);
+    public ResponseEntity<DTO> update(@PathVariable long id, Model model, HttpServletResponse response, HttpServletRequest request) {
+        DTO updated = service.update(model,id, new String[]{}, request);
         return ResponseEntity.status(HttpStatus.CREATED).body(updated);
     }
 
     @Override
     @DeleteMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public ResponseEntity<DTO> delete(@PathVariable long id) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(service.delete(id));
+    public ResponseEntity<DTO> delete(@PathVariable long id, HttpServletRequest request) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(service.delete(id, request));
     }
 
 }

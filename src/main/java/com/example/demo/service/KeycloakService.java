@@ -14,7 +14,9 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
+import java.security.Principal;
 import java.util.Arrays;
+import java.util.List;
 
 @Service
 public class KeycloakService {
@@ -86,6 +88,32 @@ public class KeycloakService {
         return HttpStatus.CREATED.value();
     }
 
+    //O Usuario é logout depois de atualizar as informações
+    public void updateCredential(Usuario usuario, String oldEmail)
+    {
+        //obtendo detalhes do usuario, servidor de autenticação
+        List<UserRepresentation> userRepresentationList
+                = keycloak.realm().users().searchByEmail(oldEmail, true);
+
+        UserRepresentation representation = userRepresentationList.get(0);
+        String id = representation.getId();
+        UserResource userResource = keycloak.realm().users().get(id);
+
+        //atualizando email
+        representation.setEmail(usuario.getEmail());
+        representation.setFirstName(usuario.getNome());
+        userResource.update(representation);
+
+        //atualizando senha
+        CredentialRepresentation newCredential = new CredentialRepresentation();
+        newCredential.setType(CredentialRepresentation.PASSWORD);
+        newCredential.setValue(usuario.getSenha());
+        newCredential.setTemporary(false);
+        userResource.resetPassword(newCredential);
+
+
+    };
+
     public UserResource getUser(String id)
     {
         return keycloak.getInstance().realm(keycloak.getRealm()).users().get(id);
@@ -124,5 +152,48 @@ public class KeycloakService {
                         OpenidConnectResponse.class);
 
         return response.getBody().access_token;
+    }
+
+    public String revokeRefreshToken(Usuario usuario)
+    {
+        return revokeRefreshToken(getRefreshToken(usuario));
+    }
+
+    public void removeUser(Usuario usuario)
+    {
+        List<UserRepresentation> userRepresentationList
+                = keycloak.realm().users().searchByEmail(usuario.getEmail(), true);
+
+        UserRepresentation representation = userRepresentationList.get(0);
+        String id = representation.getId();
+        UserResource userResource = keycloak.realm().users().get(id);
+        userResource.remove();
+    }
+
+    public String revokeRefreshToken(String refreshToken)
+    {
+        //http://localhost:8080/realms/SpringBootKeycloak/protocol/openid-connect/token
+        final String uri
+                = keycloak.getServerUrl() + "/realms/" + keycloak.getRealm()
+                +"/protocol/openid-connect/revoke";
+
+        RestTemplate restTemplate = new RestTemplate();
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+
+        MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
+        map.add("client_id", keycloak.getClientId());
+        map.add("grant_type","refresh_token");
+        map.add("token", refreshToken);
+
+        HttpEntity<MultiValueMap<String, String>> entity = new HttpEntity<>(map, headers);
+
+        ResponseEntity<OpenidConnectResponse> response =
+                restTemplate.exchange(uri,
+                        HttpMethod.POST,
+                        entity,
+                        OpenidConnectResponse.class);
+
+        return "";
     }
 }
