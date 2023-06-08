@@ -1,6 +1,7 @@
 package com.example.demo.generic;
 
 import com.example.demo.model.BaseModel;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,7 +16,8 @@ public interface RestControllerDTOInterface<
 
     ResponseEntity<DTO> save(@RequestBody Model model, HttpServletResponse response);
 
-    ResponseEntity<DTO> update(@PathVariable final long id, @RequestBody Model model);
+    ResponseEntity<DTO> update(@PathVariable final long id, @RequestBody Model model, 
+                               HttpServletResponse response, HttpServletRequest request);
 
-    ResponseEntity<DTO> delete(@PathVariable final long id);
+    ResponseEntity<DTO> delete(@PathVariable final long id, HttpServletRequest request);
 }

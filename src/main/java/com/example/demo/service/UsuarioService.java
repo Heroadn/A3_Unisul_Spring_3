@@ -8,7 +8,9 @@ import com.example.demo.model.Usuario;
 import com.example.demo.model.UsuarioDTO;
 import com.example.demo.repository.UsuarioRepository;
 import com.example.demo.resources.MidiaController;
+import jakarta.servlet.http.HttpServletRequest;
 import org.hibernate.event.spi.SaveOrUpdateEvent;
+import org.keycloak.KeycloakPrincipal;
 import org.keycloak.representations.AccessTokenResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -18,6 +20,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.stereotype.Service;
 
+import javax.ws.rs.NotAuthorizedException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -72,9 +75,47 @@ public class UsuarioService extends BasicRestDTOService<Usuario, UsuarioDTO, Usu
     }
 
     @Override
-    public UsuarioDTO delete(Long id) {
-        super.delete(id);
-        //TODO: remover dados do servidor de autenticação, quando remover usuario
+    public UsuarioDTO update(Usuario resource, Long id, String[] ignoredProperties, HttpServletRequest request) {
+        Usuario principal = this.getByToken((JwtAuthenticationToken) request.getUserPrincipal());
+        Usuario oldUser = usuarioRepository.findById(id).orElseThrow(
+                () -> new DataIntegrityViolationException("ID invalido") );
+
+        //verificando se o usuario esta alterando o seu proprio usuario
+        if(id != principal.getID())
+            throw new NotAuthorizedException("Usuario so tem permisão de alterar suas informações");
+
+        //verificando se o novo email/nome do usuario já existe
+        //caso o email seja o mesmo apenas continue
+        if(usuarioRepository.existsByEmail(resource.getEmail())
+                && !resource.getEmail().equals(oldUser.getEmail()))
+            throw new DataIntegrityViolationException("Email já existe");
+
+        if(usuarioRepository.existsByNome(resource.getNome())
+                && !resource.getNome().equals(oldUser.getNome()))
+            throw new DataIntegrityViolationException("Nome já existe");
+
+        if(resource.getSenha() != null && resource.getSenha().equals(""))
+            throw new DataIntegrityViolationException("Senha não pode ser nula");
+
+        resource.setID(oldUser.getID());
+        resource.setData_criacao(oldUser.getData_criacao());
+        keycloakService.updateCredential(resource, principal.getEmail());
+
+        //salvando usuario e dando revoke no refresh Token]
+        String token = (request.getHeader("Authorization")).replace("Bearer ", "");
+        keycloakService.revokeRefreshToken(token);
+        return toDTO(usuarioRepository.save(resource));
+    }
+
+    @Override
+    public UsuarioDTO delete(Long id, HttpServletRequest request) {
+        Usuario principal = this.getByToken((JwtAuthenticationToken) request.getUserPrincipal());
+        if(id != principal.getID())
+            throw new NotAuthorizedException("Usuario so tem permisão de deletar suas informações");
+
+        principal.setID(id);
+        keycloakService.removeUser(principal);
+        usuarioRepository.delete(principal);
         return null;
     }
 

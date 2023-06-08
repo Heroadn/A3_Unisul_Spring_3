@@ -1,5 +1,6 @@
 package com.example.demo.generic;
 
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.Link;
@@ -11,9 +12,9 @@ public interface RestServiceDTOInterface<Model, DTO> {
 
     DTO save(Model resource);
 
-    DTO update(Model resource, Long id,String... ignoredProperties);
+    DTO update(Model resource, Long id, String[] ignoredProperties, HttpServletRequest request);
 
-    DTO delete(Long id);
+    DTO delete(Long id, HttpServletRequest request);
 
     DTO toDTO(Model resource);
 

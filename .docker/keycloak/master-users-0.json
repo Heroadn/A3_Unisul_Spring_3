@@ -1,27 +1,22 @@
 {
   "realm" : "master",
   "users" : [ {
-    "id" : "c672581f-e64a-43c5-8adc-95b557baf343",
-    "createdTimestamp" : 1680185166810,
+    "id" : "64dea7e9-db8a-4527-bc77-3dc897eaa523",
+    "createdTimestamp" : 1686009473338,
     "username" : "user",
     "enabled" : true,
     "totp" : false,
     "emailVerified" : false,
     "credentials" : [ {
-      "id" : "4e9b44b1-7dd0-4bc6-b0ce-26074b7ec500",
+      "id" : "3f5425e1-c965-45bf-a98c-ef05fafc28ab",
       "type" : "password",
-      "createdDate" : 1680185167576,
-      "secretData" : "{\"value\":\"lU6BBZQelrZWZAttX52QB1yBAqTEhXPh82ronfkihiY=\",\"salt\":\"lI7eqEftGtaTQIM2KusAhQ==\",\"additionalParameters\":{}}",
+      "createdDate" : 1686009473583,
+      "secretData" : "{\"value\":\"1VR+CyRGeQcOT4y80GaKPRlRZyCEDbedi+vAW5Z7ib0=\",\"salt\":\"cWcG9qVaIOd3tA462MxVNA==\",\"additionalParameters\":{}}",
       "credentialData" : "{\"hashIterations\":27500,\"algorithm\":\"pbkdf2-sha256\",\"additionalParameters\":{}}"
     } ],
     "disableableCredentialTypes" : [ ],
     "requiredActions" : [ ],
-    "realmRoles" : [ "admin", "default-roles-master" ],
-    "clientRoles" : {
-      "app_user-realm" : [ "manage-identity-providers", "manage-realm", "manage-clients", "view-authorization", "view-clients", "view-users", "manage-authorization", "view-events", "query-groups", "view-identity-providers", "manage-users", "query-clients", "query-users", "manage-events", "create-client", "query-realms", "view-realm" ],
-      "app_admin-realm" : [ "manage-users", "view-events", "view-authorization", "view-identity-providers", "query-clients", "manage-authorization", "query-realms", "view-clients", "query-users", "manage-identity-providers", "create-client", "manage-realm", "manage-events", "view-realm", "query-groups", "view-users", "manage-clients" ],
-      "SpringBootKeycloak-realm" : [ "manage-authorization", "view-realm", "manage-users", "manage-events", "view-identity-providers", "query-groups", "view-clients", "view-events", "view-authorization", "manage-realm", "query-users", "query-realms", "manage-identity-providers", "manage-clients", "view-users", "query-clients", "create-client" ]
-    },
+    "realmRoles" : [ "default-roles-master", "admin" ],
     "notBefore" : 0,
     "groups" : [ ]
   } ]
