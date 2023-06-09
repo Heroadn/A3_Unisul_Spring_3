@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 import java.util.Collection;
 
 @Entity
-@Table(name ="usuario")
+@Table(name ="pokemon")
 public class Pokemon extends BaseModel {
     @Column(unique = true, nullable=false)
     private String nome;
@@ -15,14 +15,11 @@ public class Pokemon extends BaseModel {
     @Column(nullable=true)
     private String descricao;
 
-    @Column(nullable=false)
-    private int ataque;
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "pokemon")
+    private PokemonAtributo pokemonAtributo;
 
-    @Column(nullable=false)
-    private int defesa;
-
-    @Column(nullable=false)
-    private String tipo;
+    @CreationTimestamp
+    private LocalDateTime data_criacao;
 
     public String getNome() {
         return nome;
@@ -40,27 +37,19 @@ public class Pokemon extends BaseModel {
         this.descricao = descricao;
     }
 
-    public int getAtaque() {
-        return ataque;
+    public PokemonAtributo getPokemonAtributo() {
+        return pokemonAtributo;
     }
 
-    public void setAtaque(int ataque) {
-        this.ataque = ataque;
+    public void setPokemonAtributo(PokemonAtributo pokemonAtributo) {
+        this.pokemonAtributo = pokemonAtributo;
     }
 
-    public int getDefesa() {
-        return defesa;
+    public LocalDateTime getData_criacao() {
+        return data_criacao;
     }
 
-    public void setDefesa(int defesa) {
-        this.defesa = defesa;
-    }
-
-    public String getTipo() {
-        return tipo;
-    }
-
-    public void setTipo(String tipo) {
-        this.tipo = tipo;
+    public void setData_criacao(LocalDateTime data_criacao) {
+        this.data_criacao = data_criacao;
     }
 }

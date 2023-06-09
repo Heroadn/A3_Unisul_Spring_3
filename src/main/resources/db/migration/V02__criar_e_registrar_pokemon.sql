@@ -1,4 +1,4 @@
-create table `atributo_pokemon`(
+create table `pokemon_atributo`(
     `id`	        INTEGER PRIMARY KEY AUTO_INCREMENT,
 	`sexo`      	CHAR(1)  NOT NULL,
 	`tipo`      	VARCHAR(50)  NOT NULL,
@@ -13,6 +13,7 @@ create table `pokemon`(
     `id`            INTEGER PRIMARY KEY AUTO_INCREMENT,
     `nome`          VARCHAR(50)  NOT NULL,
     `descricao`     VARCHAR(50) ,
+    `data_criacao` DATE NOT NULL,
     `atributo_id`	INTEGER  NOT NULL,
-     FOREIGN KEY (atributo_id) REFERENCES atributo_pokemon(id)
+     FOREIGN KEY (atributo_id) REFERENCES pokemon_atributo(id)
 );
