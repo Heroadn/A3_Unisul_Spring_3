@@ -20,11 +20,6 @@ public class PokemonAtributo extends BaseModel{
     @Column(unique = true, nullable=false)
     private Long defesaMaximo;
 
-    @OneToOne(fetch = FetchType.EAGER)
-    @MapsId
-    @JoinColumn(name = "pokemon_id")
-    private Pokemon pokemon;
-
     public String getSexo() {
         return sexo;
     }
@@ -79,13 +74,5 @@ public class PokemonAtributo extends BaseModel{
 
     public void setDefesaMaximo(Long defesaMaximo) {
         this.defesaMaximo = defesaMaximo;
-    }
-
-    public Pokemon getPokemon() {
-        return pokemon;
-    }
-
-    public void setPokemon(Pokemon pokemon) {
-        this.pokemon = pokemon;
     }
 }

@@ -4,7 +4,9 @@ import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 @Entity
 @Table(name ="pokemon")
@@ -15,7 +17,8 @@ public class Pokemon extends BaseModel {
     private String descricao;
     @CreationTimestamp
     private LocalDateTime data_criacao;
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "pokemon")
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "atributo_id")
     private PokemonAtributo pokemonAtributo;
 
     public String getNome() {
@@ -48,5 +51,22 @@ public class Pokemon extends BaseModel {
 
     public void setData_criacao(LocalDateTime data_criacao) {
         this.data_criacao = data_criacao;
+    }
+
+    public static String[] decodeTipos(String tipos)
+    {
+        String [] result = tipos.split("\\|");
+        return result;
+    }
+
+    public static String encodeTipos(String[] tipos)
+    {
+        String result = "";
+
+        for (String tipo: tipos) {
+            result = result.concat(tipo + "|");
+        }
+
+        return result;
     }
 }
