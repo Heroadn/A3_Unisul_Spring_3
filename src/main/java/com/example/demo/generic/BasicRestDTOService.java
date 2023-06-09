@@ -79,7 +79,7 @@ abstract public class BasicRestDTOService<
     }
 
     @Override
-    public <T extends Object> Boolean exists(T condition) {
+    public <T extends Object> Boolean exists(T value) {
         return false;
     }
 

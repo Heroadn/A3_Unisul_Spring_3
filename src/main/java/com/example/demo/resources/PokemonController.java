@@ -1,7 +1,9 @@
 package com.example.demo.resources;
 
 import com.example.demo.generic.GenericRestController;
+import com.example.demo.generic.GenericRestDTOController;
 import com.example.demo.model.Pokemon;
+import com.example.demo.model.PokemonDTO;
 import com.example.demo.model.Usuario;
 import com.example.demo.model.UsuarioDTO;
 import com.example.demo.repository.PokemonRepository;
@@ -18,6 +20,6 @@ import java.security.Principal;
 
 @RestController
 @RequestMapping(path = "/pokemon", produces = "application/hal+json")
-public class PokemonController extends GenericRestController<Pokemon, PokemonRepository, PokemonService> {
+public class PokemonController extends GenericRestDTOController<Pokemon, PokemonDTO, PokemonRepository, PokemonService> {
 
 }

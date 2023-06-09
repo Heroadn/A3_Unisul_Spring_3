@@ -10,5 +10,5 @@ import java.util.Optional;
 
 @Repository
 public interface PokemonRepository extends JpaRepository<Pokemon, Serializable> {
-
+    Boolean existsByNome(String nome);
 }

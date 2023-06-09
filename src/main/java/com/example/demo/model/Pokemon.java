@@ -11,15 +11,12 @@ import java.util.Collection;
 public class Pokemon extends BaseModel {
     @Column(unique = true, nullable=false)
     private String nome;
-
     @Column(nullable=true)
     private String descricao;
-
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "pokemon")
-    private PokemonAtributo pokemonAtributo;
-
     @CreationTimestamp
     private LocalDateTime data_criacao;
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "pokemon")
+    private PokemonAtributo pokemonAtributo;
 
     public String getNome() {
         return nome;
