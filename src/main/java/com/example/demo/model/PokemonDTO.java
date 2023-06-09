@@ -5,6 +5,7 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
+import java.util.List;
 
 @Entity
 @Table(name ="pokemon_atributo")
@@ -12,7 +13,7 @@ public class PokemonDTO extends BaseModel{
     private String nome;
     private String descricao;
     private String sexo;
-    private String[] tipo;
+    private List<String> tipo;
     private String geracao;
     private Long ataqueMinimo;
     private Long ataqueMaximo;
@@ -58,11 +59,11 @@ public class PokemonDTO extends BaseModel{
         this.sexo = sexo;
     }
 
-    public String[] getTipo() {
+    public List<String> getTipo() {
         return tipo;
     }
 
-    public void setTipo(String[] tipo) {
+    public void setTipo(List<String> tipo) {
         this.tipo = tipo;
     }
 

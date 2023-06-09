@@ -53,9 +53,14 @@ public class Pokemon extends BaseModel {
         this.data_criacao = data_criacao;
     }
 
-    public static String[] decodeTipos(String tipos)
+    public static List<String> decodeTipos(String tipos)
     {
-        String [] result = tipos.split("\\|");
+        List<String> result = new ArrayList<>();
+        for (String tipo: tipos.split("\\|")) {
+            if(!tipo.equals("|"))
+                result.add(tipo);
+        }
+
         return result;
     }
 
