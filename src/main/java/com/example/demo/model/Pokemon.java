@@ -1,6 +1,7 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
+import net.minidev.json.annotate.JsonIgnore;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
@@ -21,6 +22,10 @@ public class Pokemon extends BaseModel {
     @JoinColumn(name = "atributo_id")
     private PokemonAtributo pokemonAtributo;
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "pokemon")
+    private Collection<MidiaPokemon> images;
+
     public String getNome() {
         return nome;
     }
@@ -37,14 +42,6 @@ public class Pokemon extends BaseModel {
         this.descricao = descricao;
     }
 
-    public PokemonAtributo getPokemonAtributo() {
-        return pokemonAtributo;
-    }
-
-    public void setPokemonAtributo(PokemonAtributo pokemonAtributo) {
-        this.pokemonAtributo = pokemonAtributo;
-    }
-
     public LocalDateTime getData_criacao() {
         return data_criacao;
     }
@@ -53,11 +50,27 @@ public class Pokemon extends BaseModel {
         this.data_criacao = data_criacao;
     }
 
+    public PokemonAtributo getPokemonAtributo() {
+        return pokemonAtributo;
+    }
+
+    public void setPokemonAtributo(PokemonAtributo pokemonAtributo) {
+        this.pokemonAtributo = pokemonAtributo;
+    }
+
+    public Collection<MidiaPokemon> getImages() {
+        return images;
+    }
+
+    public void setImages(Collection<MidiaPokemon> images) {
+        this.images = images;
+    }
+
     public static List<String> decodeTipos(String tipos)
     {
         List<String> result = new ArrayList<>();
         for (String tipo: tipos.split("\\|")) {
-            if(!tipo.equals("|"))
+            if(!tipo.equals("|") && !tipo.equals(""))
                 result.add(tipo);
         }
 

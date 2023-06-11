@@ -13,7 +13,7 @@ public class PokemonDTO extends BaseModel{
     private String nome;
     private String descricao;
     private String sexo;
-    private List<String> tipo;
+    private List<String> tipos;
     private String geracao;
     private Long ataqueMinimo;
     private Long ataqueMaximo;
@@ -24,10 +24,11 @@ public class PokemonDTO extends BaseModel{
     public PokemonDTO(Pokemon pokemon) {
         PokemonAtributo atributo = pokemon.getPokemonAtributo();
 
+        this.ID = pokemon.getID();
         this.nome = pokemon.getNome();
         this.descricao = pokemon.getDescricao();
         this.sexo = atributo.getSexo();
-        this.tipo = Pokemon.decodeTipos(atributo.getTipo());
+        this.tipos = Pokemon.decodeTipos(atributo.getTipo());
         this.geracao = atributo.getGeracao();
         this.ataqueMinimo = atributo.getAtaqueMinimo();
         this.ataqueMaximo = atributo.getAtaqueMaximo();
@@ -59,12 +60,12 @@ public class PokemonDTO extends BaseModel{
         this.sexo = sexo;
     }
 
-    public List<String> getTipo() {
-        return tipo;
+    public List<String> getTipos() {
+        return tipos;
     }
 
-    public void setTipo(List<String> tipo) {
-        this.tipo = tipo;
+    public void setTipos(List<String> tipo) {
+        this.tipos = tipo;
     }
 
     public String getGeracao() {

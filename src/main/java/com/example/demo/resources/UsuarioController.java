@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.web.bind.annotation.*;
 import java.security.Principal;
+import java.util.List;
 
 @RestController
 @RequestMapping(path = "/usuario", produces = "application/hal+json")
@@ -62,4 +63,14 @@ public class UsuarioController extends GenericRestDTOController<Usuario, Usuario
         usuarioDTO.setImages(service.getLinkImages(usuario));
         return ResponseEntity.status(HttpStatus.OK).body(usuarioDTO);
     }
+
+    /*
+    @GetMapping(value = "/nome/{nome}")
+    public ResponseEntity<List<UsuarioDTO>> pesquisar(
+            @PathVariable("nome") String nome,
+            Principal principal) {
+
+        List<UsuarioDTO> usuarios = service.findAllByNome(nome);
+        return ResponseEntity.status(HttpStatus.OK).body(usuarios);
+    }*/
 }

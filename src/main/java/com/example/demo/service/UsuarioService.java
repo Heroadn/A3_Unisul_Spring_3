@@ -24,6 +24,7 @@ import javax.ws.rs.NotAuthorizedException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
@@ -137,6 +138,13 @@ public class UsuarioService extends BasicRestDTOService<Usuario, UsuarioDTO, Usu
         Optional<Usuario> resource = usuarioRepository.findByEmail(email);
         resource.orElseThrow(() -> new EmptyResultDataAccessException(1));
         return resource.get();
+    }
+
+    public List<Usuario> findAllByNome(String nome)
+    {
+        //TODO: adicionar paginação e provavelmente mover para find all
+        //TODO: adicionar DTO
+        return usuarioRepository.findAllByNome(nome);
     }
 
     public Usuario getByToken(JwtAuthenticationToken token) {

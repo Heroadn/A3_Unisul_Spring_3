@@ -1,7 +1,7 @@
 create table `pokemon_atributo`(
     `id`	        INTEGER PRIMARY KEY AUTO_INCREMENT,
 	`sexo`      	CHAR(1)  NOT NULL,
-	`tipo`      	VARCHAR(50)  NOT NULL,
+	`tipo`      	VARCHAR(255)  NOT NULL,
 	`geracao`      	VARCHAR(50)  NOT NULL,
     `ataque_minimo`    INTEGER NOT NULL,
 	`ataque_maximo`    INTEGER NOT NULL,
