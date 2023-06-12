@@ -6,7 +6,7 @@ Projeto em spring 3, usando jwt e keycloaker como servidor de auth
     
 **Configurações e recomendações do projeto:**
 >*   Utilizar um servidor local, no projeto é o framework Java, Springboot 3.
->*   Utilizar um banco de dados, no projeto é utilizado o MySQL.
+>*   Utilizar docker onde ja vem incluso com mysql e servidor de autenticaçãp.
 >*   Utilizar ferramenta para versionamento, no projeto é utilizado GIT.
 >*   Utilizar um ambiente de trabalho para desenvolvimento, no projeto é utilizado o VSCode/IntelliJ
 
@@ -19,18 +19,16 @@ Projeto em spring 3, usando jwt e keycloaker como servidor de auth
 >*  Nome
 >*  [Link](https://www.keycloak.org/)
 
-
-
-**Funcionalidades do projeto:**
-*       Cadastro de usuário:
-                Descrição: o cadastro é feito atraves de um formulario onde deve ser informado nome, email e senha
-                Composição: apos a validação é enviado um email para ativação
-                
-**Build:**
->* Iniciar servidor keycloaker 
->* Iniciar migração/montar o banco de dados
-src/main/resources/db/migration
+ 
+**Rodar:**
+>* Iniciar servidor keycloaker/mysql 
+```bash
+docker-compose up -d
+``` 
 >* Iniciar aplicação springboot
+```bash
+./gradlew bootRun
+```
                 
 **TODO:**
 >*   Resolver TODOS, redundancias no application.yml
@@ -46,7 +44,7 @@ docker-compose up -d
 
 ## Iniciar backend
 ```bash
-./run.bat
+./gradlew bootRun
 ```
 
 ## Parar serviços
