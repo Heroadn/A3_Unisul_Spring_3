@@ -12,7 +12,7 @@ create table `pokemon_atributo`(
 create table `pokemon`(
     `id`            INTEGER PRIMARY KEY AUTO_INCREMENT,
     `nome`          VARCHAR(50)  NOT NULL,
-    `descricao`     VARCHAR(255) ,
+    `descricao`     LONGTEXT,
     `data_criacao`  DATE NOT NULL,
     `atributo_id`	INTEGER  NOT NULL,
      FOREIGN KEY (atributo_id) REFERENCES pokemon_atributo(id)
