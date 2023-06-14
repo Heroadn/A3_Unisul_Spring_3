@@ -29,6 +29,7 @@ docker-compose up -d
 ```bash
 ./gradlew bootRun
 ```
+>*O Spring 3 ja vem incluso com o flyway, criando o banco de dados automaticamente
                 
 **TODO:**
 >*   Resolver TODOS, redundancias no application.yml
